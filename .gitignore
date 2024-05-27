@@ -1,0 +1,34 @@
+# hidden file
+.gitconfig
+.DS_Store
+.bash_history
+.bash_logout
+.lesshst
+.profile
+.sudo_as_admin_successful
+.viminfo
+.Xauthority
+.zshrc
+
+# file
+logo.png
+
+# hidden directory
+.cache/
+.config/
+.dotnet/
+.git/
+.local/
+.npm/
+.sdkman/
+.ssh/
+.vscode-server/
+
+# directory
+problems/
+problems_backup/
+judge-server/
+pdfoid/
+texoid/
+snap/
+dmojsite/

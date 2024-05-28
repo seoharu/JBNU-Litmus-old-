@@ -1,79 +1,126 @@
 {% extends "base.html" %}
 
 {% block media %}
-    <style>
-        h4 {
-            padding-top: 1em;
-        }
+<style>
+    .auth-flow-form {
+        max-width: 62.5%;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        text-align: center;
+    }
 
-        .social {
-            display: inline;
-            font-size: 2.3em;
-            float: none;
-        }
+    .auth-flow-form h2 {
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
 
-        .google-icon i {
-            color: #DD4B38;
-        }
+    .form-area {
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        border: none;
+        gap: 10px;
+        width: 45%;
+    }
 
-        .facebook-icon i {
-            color: #133783;
-        }
+    .form-area input[type="text"],
+    .form-area input[type="password"] {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        width: 100%;
+        height: 48px;
+        box-sizing: border-box;
+    }
 
-        .github-icon i {
-            color: black;
-        }
-    </style>
+    .form-area button[type="submit"],
+    .form-area button,
+    .form-area .button {
+        background: none;
+        background-color: #5C95D9;
+        display: block;
+        border-radius: 8px;
+        border: 1px solid #5C95D9;
+        font-size: 14px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        line-height: 1.5;
+        height: 40px;
+        box-sizing: border-box; /* 패딩과 테두리가 총 크기에 포함되도록 설정 */
+    }
+
+    .form-area a.button {
+        display: block; /* 인라인 요소를 블록 요소로 변경 */
+        text-align: center;
+        padding: 10px; /* 버튼과 동일한 패딩 적용 */
+        font-size: 14px;
+        color: #5C95D9 !important;
+        background: none;
+        background-color: white;
+        border: 1px solid #5C95D9;
+        border-radius: 8px;
+        height: 40px;
+        box-sizing: border-box;
+        line-height: 1.5; /* 텍스트가 버튼의 중앙에 위치하도록 설정 */
+        cursor: pointer;
+        text-decoration: none; /* 기본 링크 스타일 제거 */
+    }
+
+    .form-area button:hover,
+    .form-area a.button:hover {
+        background-color: #45a049;
+    }
+
+    .form-links {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-bottom: 10px;
+        color: #8391A1;
+    }
+
+    .form-links a {
+        text-decoration: none;
+        color: #8391A1;
+    }
+
+    .form-links a:hover {
+        text-decoration: underline;
+    }
+
+    footer {
+        margin-top: 30px;
+    }
+
+    .footer-content {
+        text-align: center;
+        color: #808080;
+    }
+</style>
 {% endblock %}
 
 {% block body %}
-    <div class="auth-flow-form">
-        <form action="" method="post" class="form-area">
-            {% csrf_token %}
-            {% if form.errors %}
-                <div id="form-errors">
-                    <p class="error">{{ _('Invalid username or password.') }}</p>
-                </div>
-            {% endif %}
-            <table border="0" style="text-align:left">
-                <tr>
-                    <th><i class="fa fa-user fa-fw"></i>
-                    </th>
-                    <td>{{ form.username }}
-                    </td>
-                </tr>
-                <tr>
-                    <th><i class="fa fa-key fa-fw"></i>
-                    </th>
-                    <td>{{ form.password }}
-                    </td>
-                </tr>
-            </table>
-            <hr>
-            <button style="float:right;" type="submit">{{ _('Login!') }}</button>
-            <input type="hidden" name="next" value="{{ next }}">
-        </form>
-        <a href="{{ url('password_reset') }}">{{ _('Forgot your password?') }}</a>
-
-        {% if form.has_google_auth or form.has_facebook_auth or form.has_github_auth %}
-            <h4>{{ _('Or log in with...') }}</h4>
-            <div>
-                {% if form.has_google_auth %}
-                    <a href="{{ url('social:begin', "google-oauth2") }}?next={{ next }}" class="social google-icon">
-                        <i class="fa fa-google-plus-square"></i>
-                    </a>
-                {% endif %}
-                {% if form.has_facebook_auth %}
-                    <a href="{{ url('social:begin', "facebook") }}?next={{ next }}" class="social facebook-icon">
-                        <i class="fa fa-facebook-square"></i>
-                    </a>
-                {% endif %}
-                {% if form.has_github_auth %}
-                    <a href="{{ url('social:begin', "github-secure") }}?next={{ next }}" class="social github-icon">
-                        <i class="fa fa-github-square"></i>
-                    </a>
-                {% endif %}
-            </div>
+<div class="auth-flow-form">
+    <h2>로그인</h2>
+    <form action="" method="post" class="form-area" style="background-color: ;">
+        {% csrf_token %}
+        {% if form.errors %}
+        <div id="form-errors">
+            <p class="error">{{ _('Invalid username or password.') }}</p>
+        </div>
         {% endif %}
-    </div>
+        {{ form.username }}
+        {{ form.password }}
+        <div class="form-links">
+            <a href="{{ url('password_reset') }}">{{ _('아이디 찾기') }}</a> |
+            <a href="{{ url('password_reset') }}">{{ _('비밀번호 찾기') }}</a>
+        </div>
+        <button type="submit" class="button">{{ _('로그인') }}</button>
+        <a href="{{ url('registration_register') }}" class="button">{{ _('회원가입') }}</a>
+    </form>
+</div>
 {% endblock %}

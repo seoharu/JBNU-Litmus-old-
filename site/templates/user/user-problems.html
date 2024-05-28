@@ -1,3 +1,5 @@
+<!-- 유저페이지 - 문제 -->
+
 {% extends "user/user-base.html" %}
 
 {% block user_js_media %}
@@ -32,10 +34,71 @@
     {% include "user/user-tabs.html" %}
 {% endblock %}
 
+{% block media %}
+    <style>
+        .content-submission {
+            width: 62.5%;
+            margin: 0 auto;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        .content-submission #total-point {
+            text-align: right;
+            font-size: 13px;
+            padding-top: 25px;
+            padding-bottom: 25px;
+        }
+        .content-submission #total-point b {
+            font-size: 22px;
+            font-weight: 500;
+            color: #78C0B9;
+            margin-left: 5px;
+        }
+        .content-submission .pp-table .sub-table-head {
+            display: flex;
+            flex-direction: row;
+            background-color: white;
+            font-size: 14px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            border: 1px solid #D9D9D9;
+            border-bottom: none;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .content-submission .pp-table .sub-table-head .zero-head {
+            text-align: center;
+            width: 10%;
+        }
+        .content-submission .pp-table .sub-table-head .first-head {
+            padding-left: 15px;
+            text-align: left;
+            width: 66%;
+        }
+        .content-submission .pp-table .sub-table-head .second-head {
+            text-align: center;
+            width: 15.75%;
+        }
+        .content-submission .pp-table .sub-table-head .third-head {
+            text-align: center;
+            width: 8.25%;
+            margin-left: 5px;
+        }
+    </style>
+{% endblock %}
+
 {% block user_content %}
+<div class="content-submission">
     {% if pp_breakdown %}
-        <h3 class="pp-breakdown-header">{{ _('Points breakdown') }}</h3>
+        <!-- <h3 class="pp-breakdown-header">{{ _('Points breakdown') }}</h3> -->
+        <div id="total-point">총점  <b>2341pp</b></div>
         <div id="submissions-table" class="pp-table table">
+            <div class="sub-table-head">
+                <div class="zero-head"></div>
+                <div class="first-head">문제</div>
+                <div class="second-head">문제</div>
+                <div class="third-head">포인트</div>
+            </div>
             {% include "user/pp-table-body.html" %}
         </div>
         {% if pp_has_more %}
@@ -122,4 +185,5 @@
             </table>
         </div>
     {% endfor %}
+</div>
 {% endblock %}

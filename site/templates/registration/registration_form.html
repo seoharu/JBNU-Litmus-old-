@@ -4,7 +4,32 @@
     {% include "timezone/media-css.html" %}
     {{ form.media.css }}
     <style>
-        .sortedm2m-container, .sortedm2m-container p.selector-filter {
+        .auth-flow-form {
+            max-width: 62.5%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .auth-flow-form h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .form-area {
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            border: none;
+            gap: 10px;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        /* .sortedm2m-container, .sortedm2m-container p.selector-filter {
             width: 300px;
         }
 
@@ -31,13 +56,9 @@
             min-height: 70px;
             max-height: 200px;
             height: 70px
-        }
+        } */
 
-        .grayed {
-            color: #666;
-        }
-
-        .inline-header {
+        /* .inline-header {
             float: left;
             font-size: 1.1em;
             padding: 4px 8px;
@@ -51,6 +72,49 @@
             padding-bottom: 0.2em;
             padding-left: 2px;
             margin-top: 0.75em
+        } */
+
+        .form-area input,
+        .form-area input[type="text"],
+        .form-area input[type="password"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 100%;
+            height: 48px;
+            box-sizing: border-box;
+        }
+
+        .form-area select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 100%;
+            height: 48px;
+            box-sizing: border-box;            
+        }
+
+        .form-area button,
+        .form-area .button {
+            background: none;
+            background-color: #5C95D9;
+            border: 1px solid #5C95D9;
+            display: block;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            line-height: 1.5;
+            height: 40px;
+            box-sizing: border-box; /* 패딩과 테두리가 총 크기에 포함되도록 설정 */
+        }
+
+        .form-area button:hover,
+        .form-area a.button:hover {
+            background-color: #45a049;
         }
 
         .fullwidth {
@@ -79,6 +143,7 @@
         #edit-form {
             border: unset;
             background: unset;
+            width: 45%;
         }
 
         #content-body {
@@ -89,7 +154,7 @@
             display: inline-block;
             text-align: initial;
             max-width: 100%;
-            width: 450px;
+            width: 62.5%;
         }
 
         ul.errorlist {
@@ -136,25 +201,16 @@
 {% endblock %}
 
 {% block body %}
-    <div id="center-float">
+    <div id="center-float" class="auth-flow-form">
+        <h2>회원가입</h2>
         <form id="edit-form" action="" method="post" class="form-area">
             {% csrf_token %}
-
-            <div class="block-header">{{ _('Username') }}</div>
+            <!-- 아이디 -->
             <span class="fullwidth{% if form.username.errors %}-error{% endif %}">{{ form.username }}</span>
             {% if form.username.errors %}
                 <div class="form-field-error">{{ form.username.errors }}</div>
             {% endif %}
-
-            <div class="block-header">{{ _('Email') }}</div>
-            <span class="fullwidth{% if form.email.errors %}-error{% endif %}">{{ form.email }}</span>
-            {% if form.email.errors %}
-                <div class="form-field-error">{{ form.email.errors }}</div>
-            {% endif %}
-
-            <div class="block-header">{{ _('Password') -}}
-                <small>(<a href="#" class="pass-req-link">?</a>)</small>
-            </div>
+            <!-- 비밀번호 -->
             <div style="display: none" class="pass-req alert alert-info">
                 <ul>
                     {% for validator in password_validators %}
@@ -166,15 +222,16 @@
             {% if form.password1.errors %}
                 <div class="form-field-error">{{ form.password1.errors }}</div>
             {% endif %}
-            <div class="block-header">{{ _('Password') }}<sup style="font-size: 0.7em;padding-left: 0.2em;">2</sup>{# -#}
-                <small>{{ _('(again, for confirmation)') }}</small>
-            </div>
             <span class="fullwidth{% if form.password2.errors %}-error{% endif %}">{{ form.password2 }}</span>
             {% if form.password2.errors %}
                 <div class="form-field-error">{{ form.password2.errors }}</div>
             {% endif %}
-
-            <div class="block-header">{{ _('Timezone') }}<small>{{ _('(select your closest major city)') }}</small></div>
+            <!-- 이메일 -->
+            <span class="fullwidth{% if form.email.errors %}-error{% endif %}">{{ form.email }}</span>
+            {% if form.email.errors %}
+                <div class="form-field-error">{{ form.email.errors }}</div>
+            {% endif %}
+            <!-- 국가선택
             <div class="fullwidth">
                 <div>{{ form.timezone }}
                     <div style="float: right">
@@ -182,16 +239,14 @@
                         <a id="open-map" href="#" data-featherlight=".map-wrap">{{ _('pick from map') }}</a>
                     </div>
                 </div>
-            </div>
-
-            <div class="block-header">{{ _('Default language') }}</div>
+            </div> -->
+            <!-- 언어선택 -->
             <span class="fullwidth">{{ form.language }}</span>
-
-            <div class="block-header">{{ _('Affiliated organizations') }}</div>
+            <!-- 조직선택
             {{ form.organizations }}
             {% if form.organizations.errors %}
                 <div class="form-field-error">{{ form.organizations.errors }}</div>
-            {% endif %}
+            {% endif %} -->
 
             {% if form.newsletter %}
                 <div style="padding-top: 0.5em;">{{ form.newsletter }}
@@ -208,12 +263,12 @@
             {% endif %}
 
             <hr>
-            {% if tos_url %}
+            <!-- {% if tos_url %}
                 <span class="tos-section">
                     {{ (_('By registering, you agree to our [Terms & Conditions][0].') + '\n\n  [0]: ' + tos_url)|markdown('default', strip_paragraphs=True) }}
                 </span>
-            {% endif %}
-            <button style="float:right;" type="submit">{{ _('Register!') }}</button>
+            {% endif %} -->
+            <button style="float:right;" type="submit">{{ _('회원가입') }}</button>
         </form>
     </div>
 

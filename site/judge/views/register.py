@@ -22,9 +22,24 @@ bad_mail_regex = list(map(re.compile, settings.BAD_MAIL_PROVIDER_REGEX))
 
 
 class CustomRegistrationForm(RegistrationForm):
-    username = forms.RegexField(regex=r'^\w+$', max_length=30, label=_('Username'),
-                                error_messages={'invalid': _('A username must contain letters, '
-                                                             'numbers, or underscores.')})
+    username = forms.RegexField(
+        regex=r'^\w+$',
+        max_length=30,
+        label=_('Username'),
+        error_messages={'invalid': _('A username must contain letters, numbers, or underscores.')},
+        widget=forms.TextInput(attrs={'placeholder': _('아이디')})
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'placeholder': _('이메일')})
+    )
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': _('비밀번호')}),
+        label=_('Password')
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': _('비밀번호 확인')}),
+        label=_('Password Confirmation')
+    )
     timezone = ChoiceField(label=_('Timezone'), choices=TIMEZONE,
                            widget=Select2Widget(attrs={'style': 'width:100%'}))
     language = ModelChoiceField(queryset=Language.objects.all(), label=_('Preferred language'), empty_label=None,

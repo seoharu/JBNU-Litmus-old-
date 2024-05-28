@@ -430,7 +430,7 @@ class UserList(QueryStringSortMixin, DiggPaginatorMixin, TitleMixin, ListView):
     title = gettext_lazy('Leaderboard')
     context_object_name = 'users'
     template_name = 'user/list.html'
-    paginate_by = 100
+    paginate_by = 20 #페이징 기준 정하는 변수
     all_sorts = frozenset(('points', 'problem_count', 'rating', 'performance_points'))
     default_desc = all_sorts
     default_sort = '-performance_points'

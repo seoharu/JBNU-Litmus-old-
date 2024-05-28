@@ -1,3 +1,5 @@
+<!-- 유저페이지 - 정보 -->
+
 {% extends "user/user-base.html" %}
 
 {% block title_ruler %}{% endblock %}
@@ -7,92 +9,173 @@
     {% include "user/user-tabs.html" %}
 {% endblock %}
 
+{% block media %}
+    <style>
+        /* .content-description .submission-activity .submission-activity-display{
+            background-color: white;
+        } */
+        .content-description {
+            width: 62.5%;
+            margin: 0 auto;
+        }
+        .user-information-display {
+            background-color: white;
+            padding: 10px;
+            padding-left: 20px;
+            padding-right: 15px;
+            padding-bottom: 20px;
+            /* text-align: center; */
+            border-radius: 15px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .user-information-display .user-information-about {
+            margin-left: 10px;
+        }
+        .user-information-display .user-information-intro {
+            background-color: #D9D9D9;
+            border-radius: 15px;
+            margin: 10px;
+            padding: 1px 10px 1px 10px;
+        }
+        #submission-activity {
+            
+        }
+        #submission-activity #submission-activity-display {
+            background-color: white;
+            padding: 10px;
+            padding-right: 15px;
+            padding-bottom: 20px;
+            text-align: center;
+            border-radius: 15px;
+        }
+        #submission-activity #submission-activity-display h5 {
+            margin-bottom: 7px;
+        }
+        #submission-activity #submission-activity-display #submission-activity-table {
+        }
+        .submission-date-col {
+            text-align: center;
+        }
+        #submission-activity #submission-activity-display table th.submission-date-col {
+            width: 3%;
+        }
+        #submission-activity #submission-activity-display #submission-total-count {
+            align-self: center;
+            /* padding-left: 8%; */
+            padding-left: 15px;
+            font-size: 0.85em;
+        }
+        .gradient-bar {
+            width: 12%; 
+            height: 10px; 
+            background: linear-gradient(to right, #90ee90, #006400); 
+            border-radius: 10px; 
+            margin-right: 5px;
+        }
+    </style>
+{% endblock %}
+
 {% block user_content %}
+    <!-- 유저 페이지의 아래 부분 -->
+    <!-- <div id="submission-activity-display">
+    </div> -->
+    
     <div class="content-description">
-        {% with orgs=user.organizations.all() %}
-            {% if orgs %}
-                <p style="margin-top: 0"><b>{{ _('From') }}</b>
-                    {% for org in orgs -%}
-                        <a href="{{ org.get_absolute_url() }}">{{ org.name }}</a>
-                        {%- if not loop.last %}, {% endif %}
-                    {% endfor %}
-                </p>
-            {% endif %}
-        {% endwith %}
-        {% if perms.judge.change_profile %}
-            {% with notes=user.notes %}
-                {% if notes %}
-                    <b>{{ _('Admin notes:') }}</b>
-                    <pre style="margin-top: 0">{{ notes }}</pre>
+        <div class="user-information-display">
+            <div class="user-information-about">
+                {% with orgs=user.organizations.all() %}
+                    {% if orgs %}
+                        <p style="margin-top: 0"><b>{{ _('소속') }}</b>
+                            {% for org in orgs -%}
+                                <a href="{{ org.get_absolute_url() }}">{{ org.name }}</a>
+                                {%- if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+                {% endwith %}
+                {% if perms.judge.change_profile %}
+                    {% with notes=user.notes %}
+                        {% if notes %}
+                            <b>{{ _('Admin notes:') }}</b>
+                            <pre style="margin-top: 0">{{ notes }}</pre>
+                        {% endif %}
+                    {% endwith %}
                 {% endif %}
-            {% endwith %}
-        {% endif %}
-
-        {% if user.about %}
-            <h4>{{ _('About') }}</h4>
-            {% cache 86400 'user_about' user.id MATH_ENGINE %}
-                {{ user.about|markdown('self-description', MATH_ENGINE)|reference|str|safe }}
-            {% endcache %}
-        {% else %}
-            <i>
-                {% if user.user == request.user %}
-                    {{ _('You have not shared any information.') }}
+            </div>
+            <div class="user-information-intro">
+                {% if user.about %}
+                    <!-- <h4>{{ _('자기소개') }}</h4> -->
+                    {% cache 86400 'user_about' user.id MATH_ENGINE %}
+                        {{ user.about|markdown('self-description', MATH_ENGINE)|reference|str|safe }}
+                    {% endcache %}
                 {% else %}
-                    {{ _('This user has not shared any information.') }}
+                    <p>
+                        {% if user.user == request.user %}
+                            {{ _('You have not shared any information.') }}
+                        {% else %}
+                            {{ _('This user has not shared any information.') }}
+                        {% endif %}
+                    </p>
                 {% endif %}
-            </i>
-            <br>
-        {% endif %}
+            </div>
+        </div>
+        
 
-        <h4 id="submission-activity-header"></h4>
-        <div id="submission-activity" style="display: none;">
-            <div id="submission-activity-actions">
+        <!-- <h4 id="submission-activity-header" style="background-color: aqua;"></h4> -->
+        <div id="submission-activity" style="display: none">
+            <!-- <div id="submission-activity-actions">
                 <a href="javascript:void(0)" id="prev-year-action">&laquo;</a>
                 &nbsp;<span id="year"></span>&nbsp;
                 <a href="javascript:void(0)" id="next-year-action">&raquo;</a>
-            </div>
+            </div> -->
+            <!-- 잔디밭 -->
             <div id="submission-activity-display">
+                <h5>2024</h5>
                 <table id="submission-activity-table">
                     <tr id="submission-0">
                         <th class="submission-date-col info-text">
-                            {{ _('Sun') }}
-                        </th>
+                            {{ _('S') }}
+                        </th> 
                     </tr>
                     <tr id="submission-1">
                         <th class="submission-date-col info-text">
-                            {{ _('Mon') }}
+                            {{ _('M') }}
                         </th>
                     </tr>
                     <tr id="submission-2">
                         <th class="submission-date-col info-text">
-                            {{ _('Tues') }}
+                            {{ _('T') }}
                         </th>
                     </tr>
                     <tr id="submission-3">
                         <th class="submission-date-col info-text">
-                            {{ _('Wed') }}
+                            {{ _('W') }}
                         </th>
                     </tr>
                     <tr id="submission-4">
                         <th class="submission-date-col info-text">
-                            {{ _('Thurs') }}
+                            {{ _('T') }}
                         </th>
                     </tr>
                     <tr id="submission-5">
                         <th class="submission-date-col info-text">
-                            {{ _('Fri') }}
+                            {{ _('F') }}
                         </th>
                     </tr>
                     <tr id="submission-6">
                         <th class="submission-date-col info-text">
-                            {{ _('Sat') }}
+                            {{ _('S') }}
                         </th>
                     </tr>
                 </table>
                 <div class="info-bar">
                     <span id="submission-total-count" class="info-text">
                     </span>
-                    <table class="info-table">
+                    <!-- 그라데이션바 -->
+                    <div class="gradient-bar"></div> 
+                    <!-- <table class="info-table">
                         <tr>
                             <th class="info-table-text info-text">{{ _('Less') }}</th>
                             <td class="activity-0"><div></div></td>
@@ -102,7 +185,7 @@
                             <td class="activity-4"><div></div></td>
                             <th class="info-table-text info-text">{{ _('More') }}</th>
                         <tr>
-                    </table>
+                    </table> -->
                 </div>
             </div>
         </div>

@@ -1,7 +1,17 @@
+<!-- 유저 마이페이지의 기본 html -->
+<!-- 해당 페이지는 style 정의가 먹지 않아서, style.css에 모든 css 부분을 정의함 -->
+
 {% extends "base.html" %}
 
 {% block media %}
     {% block user_media %}{% endblock %}
+    <style>
+        .user-content-area .user-content {
+            width: 62.5%;
+            margin: 0 auto;
+        }
+    </style>
+    <!-- 아래 style 부분이 안먹혀서 style.css에 적용했습니다 -->
 {% endblock %}
 
 {% block js_media %}
@@ -10,50 +20,61 @@
 
 {% block body %}
     <div class="user-info-page">
-        <div class="user-sidebar">
-            <img src="{{ gravatar(user, 135) }}" width="135px" height="135px" class="user-gravatar">
-            <br>
-
-            <div><b>
-                {%- trans trimmed counter=user.problem_count %}
-                    {{ counter }} problem solved
-                {% pluralize %}
-                    {{ counter }} problems solved
-                {% endtrans -%}
-            </b></div>
-
-            {% if not user.is_unlisted %}
-                <div><b class="semibold">{{ _('Rank by points:') }}</b> #{{ rank }}</div>
-            {% endif %}
-            <div>
-                <b class="semibold">{{ _('Total points:') }}</b>
-                <span title="{{ user.performance_points|floatformat(2) }}">
-                    {{ user.performance_points|floatformat(0) }}
-                </span>
-            </div>
-
-            <br>
-            <div>
-                <a href="{{ url('all_user_submissions', user.user.username) }}">{{ _('View submissions') }}</a>
-            </div>
-
-            {% if ratings %}
+        <div class="user-sidebar-area">
+            <div class="user-sidebar">
+                <img src="{{ gravatar(user, 135) }}" class="user-gravatar">
                 <br>
-                <div><b>
-                    {%- trans trimmed counter=ratings|length %}
-                        {{ counter }} contest written
-                    {% pluralize %}
-                        {{ counter }} contests written
-                    {% endtrans -%}
-                </b></div>
-                {% if not user.is_unlisted %}
-                    <div><b class="semibold">{{ _('Rank by rating:') }}</b> #{{ rating_rank }}</div>
+                <div class="user-info-text">
+                    <div class="user-info-text-1">
+                        <h3>{{ user.username }}</h3>
+                        <p>전북대학교 컴퓨터인공지능학부</p>
+                    </div>
+                    <div class="user-info-text-2">
+                        <div>
+                            <span class="num-style">
+                                {%- trans trimmed counter=user.problem_count %}
+                                    {{ counter }}
+                                {% pluralize %}
+                                    {{ counter }}
+                                {% endtrans -%}
+                            </span>
+                            <span class="semibold">문제해결</span>
+                        </div>
+                        <div>
+                            <span class="num-style" title="{{ user.performance_points|floatformat(2) }}">
+                                {{ user.performance_points|floatformat(0) }}
+                            </span>
+                            <b class="semibold">{{ _('포인트') }}</b>
+                        </div>
+                        {% if not user.is_unlisted %}
+                            <div><span class="num-style">#{{ rank }}</span><b class="semibold">{{ _('등') }}</b></div>
+                        {% endif %}
+                        
+                    </div><br>
+                    <a href="{{ url('all_user_submissions', user.user.username) }}" class="button-sub">{{ _('제출 보기') }}</a>
+                </div>
+                <br>
+    
+                {% if ratings %}
+                    <br>
+                    <div><b>
+                        {%- trans trimmed counter=ratings|length %}
+                            {{ counter }} contest written
+                        {% pluralize %}
+                            {{ counter }} contests written
+                        {% endtrans -%}
+                    </b></div>
+                    {% if not user.is_unlisted %}
+                        <div><b class="semibold">{{ _('Rank by rating:') }}</b> #{{ rating_rank }}</div>
+                    {% endif %}
+                    <div><b class="semibold">{{ _('Rating:') }}</b> {{ rating_number(rating) }}</div>
+                    <div><b class="semibold">{{ _('Min. rating:') }}</b> {{ rating_number(min_rating) }}</div>
+                    <div><b class="semibold">{{ _('Max rating:') }}</b> {{ rating_number(max_rating) }}</div>
                 {% endif %}
-                <div><b class="semibold">{{ _('Rating:') }}</b> {{ rating_number(rating) }}</div>
-                <div><b class="semibold">{{ _('Min. rating:') }}</b> {{ rating_number(min_rating) }}</div>
-                <div><b class="semibold">{{ _('Max rating:') }}</b> {{ rating_number(max_rating) }}</div>
-            {% endif %}
+            </div>
         </div>
-        <div class="user-content">{% block user_content %}{% endblock %}</div>
+        <div class="user-content-area">
+            <div class="user-content">{% block user_content %}{% endblock %}</div>
+        </div>
     </div>
 {% endblock %}

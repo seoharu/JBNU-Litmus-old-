@@ -1,6 +1,8 @@
 # hidden file
 .gitconfig
 .DS_Store
+.bashrc
+.wget-hsts
 .bash_history
 .bash_logout
 .lesshst

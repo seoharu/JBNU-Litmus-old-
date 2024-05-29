@@ -13,7 +13,22 @@
         .info-float a {
             vertical-align: middle;
         }
+        .info-float .fa {
+            color: rgb(159,202,242);
+            padding-right: 0.2em;
+          }
+        #content-right .info-float {
+            float: none;
+            padding: 0;
+            position: sticky;
+            top: 70px;
+            width: 100%;
+            border: 1px solid #ccc; 
+            border-radius: 5px;
+            padding:20px;;
 
+            
+        }
         .problem-clarification {
             border-bottom: 1px solid #ccc;
             margin-top: 1em;
@@ -40,6 +55,52 @@
 
         .problem-info-entry {
             padding-top: 0.5em;
+            margin-top: 3px;
+            margin-left: 10px;
+        }
+
+
+        .button, button, input[type=submit] {
+            color: white;
+            text-decoration: none !important;
+            cursor: pointer;
+            vertical-align: middle;
+            white-space: nowrap;
+            font-weight: 400;
+            line-height: 1.4;
+            background: var(--LITMUS-Primary, rgba(92, 149, 217, 1));
+            border-radius: 4px;
+            padding: 6px 12px;
+            display: block;
+            border: none;
+            text-align: center;
+            font-size: 14px;
+          }
+        .button:hover, button:hover, input[type=submit]:hover {
+            background: #265a88;
+          }
+        .button:active, button:active, input[type=submit]:active {
+            border-color: #245580;
+            background: #265a88;
+          }
+        .button.full, button.full, input[type=submit].full {
+            padding: 6px 0;
+          }
+        .button.disabled, button.disabled, input[type=submit].disabled {
+            background: linear-gradient(to bottom, darkgray 0, gray 100%) repeat-x !important;
+            border-color: grey !important;
+            cursor: not-allowed;
+          }
+        .pi-name {
+            font-weight: normal;
+          }
+        .button-font{
+            font-family: Pretendard;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 17.5px;
+            text-align: center;
+            color:#8391A1;
         }
     </style>
 {% endblock %}
@@ -59,9 +120,9 @@
             {% if problem.id in completed_problem_ids %}
                 <a href="{{ url('user_submissions', problem.code, request.user.username) }}">
                     {% if problem.is_public or request.in_contest %}
-                        <i class="solved-problem-color title-state fa fa-check-circle"></i>
+                        <!--<i class="solved-problem-color title-state fa fa-check-circle"></i> -->
                     {% else %}
-                        <i class="solved-problem-color title-state fa fa-lock"></i>
+                        <!--<i class="solved-problem-color title-state fa fa-lock"></i> -->
                     {% endif %}
                 </a>
             {% elif problem.id in attempted_problems %}
@@ -74,7 +135,15 @@
                 </a>
             {% endif %}
         {% endif %}
-        <h2 style="display: inline-block">{{ title }}</h2>
+        <h2 style="
+            display: inline-block;
+            font-family: Pretendard;
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 28.8px;
+            text-align: center;
+            color: var(--Blackfont, #17171B);
+        ">{{ title }}</h2>
         {% if problem.is_organization_private %}
             <span class="organization-tags">
                 {% for org in problem.organizations.all() %}
@@ -86,7 +155,7 @@
                 {% endfor %}
             </span>
         {% endif %}
-        {% if has_pdf_render %}
+        <!-- {% if has_pdf_render %}
             <span class="spacer"></span>
             <a href="{{ url('problem_pdf', problem.code) }}" class="view-pdf">
                 <span class="pdf-icon">
@@ -95,7 +164,7 @@
                 </span>
                 {{ _('View as PDF') }}
             </a>
-        {% endif %}
+        {% endif %} -->
     </div>
 {% endblock %}
 
@@ -122,17 +191,13 @@
         </a>
     {% endif %}
 
-    <hr style="padding-bottom: 0.3em">
 
-    {% if request.user.is_authenticated and has_submissions %}
+    <!-- {% if request.user.is_authenticated and has_submissions %}
         <div>
             <a href="{{ url('user_submissions', problem.code, request.user.username) }}">{{ _('My submissions') }}</a>
         </div>
-    {% endif %}
-    <div><a href="{{ url('chronological_submissions', problem.code) }}">{{ _('All submissions') }}</a></div>
-    <div><a href="{{ url('ranked_submissions', problem.code) }}">{{ _('Best submissions') }}</a></div>
-
-    {% if vote_perm.can_view() %}
+    {% endif %} -->
+    <!-- {% if vote_perm.can_view() %}
         <hr style="padding-top: 0.1em">
         {% if vote_perm.can_vote() %}
             <div><a href="#" data-featherlight="{{ url('problem_vote', problem.code) }}" id="problem-vote-button">
@@ -144,9 +209,9 @@
             </a></div>
         {% endif %}
         <div><a href="#" data-featherlight="{{ url('problem_vote_stats', problem.code) }}">{{ _('Voting statistics') }}</a></div>
-    {% endif %}
+    {% endif %} -->
 
-    {% if (editorial and editorial.is_accessible_by(request.user)) and not request.in_contest %}
+    <!-- {% if (editorial and editorial.is_accessible_by(request.user)) and not request.in_contest %}
         <hr>
         <div><a href="{{ url('problem_editorial', problem.code) }}">{{ _('Read editorial') }}</a></div>
     {% endif %}
@@ -182,10 +247,10 @@
         </div>
     {% endif %}
 
-    <hr style="padding-top: 0.3em">
+    <hr style="padding-top: 0.3em"> -->
 
     <div class="problem-info-entry">
-        <i class="fa fa-check fa-fw"></i><span class="pi-name">{{ _('Points:') }}</span>
+        <i class="fa fa-check fa-fw"></i><span class="pi-name">{{ _('Points :') }}</span>
         <span class="pi-value">
             {% if contest_problem %}
                 {{ contest_problem.points }}{% if contest_problem.partial %} {{ _('(partial)') }}{% endif %}
@@ -195,7 +260,7 @@
         </span>
     </div>
     <div class="problem-info-entry">
-        <i class="fa fa-clock-o fa-fw"></i><span class="pi-name">{{ _('Time limit:') }}</span>
+        <i class="fa fa-clock-o fa-fw"></i><span class="pi-name">{{ _('Time limit :') }}</span>
         <span class="pi-value">{{ problem.time_limit }}s</span>
     </div>
     <div class="problem-lang-limits">
@@ -207,7 +272,7 @@
         {% endfor %}
     </div>
     <div class="problem-info-entry">
-        <i class="fa fa-server fa-fw"></i><span class="pi-name">{{ _('Memory limit:') }}</span>
+        <i class="fa fa-server fa-fw"></i><span class="pi-name">{{ _('Memory limit :') }}</span>
         <span class="pi-value">{{ problem.memory_limit|kbsimpleformat }}</span>
     </div>
     <div class="problem-lang-limits">
@@ -219,7 +284,7 @@
         {% endfor %}
     </div>
 
-    <hr style="padding-top: 0.7em">
+    
 
     {% if not contest_problem or not contest_problem.contest.hide_problem_authors %}
         {% cache 86400 'problem_authors' problem.id LANGUAGE_CODE %}
@@ -238,8 +303,10 @@
             {% endwith %}
         {% endcache %}
     {% endif %}
-
-    {% if not contest_problem or not contest_problem.contest.hide_problem_tags %}
+    <a>&nbsp;</a>
+    <div><a href="{{ url('chronological_submissions', problem.code) }}" class="unselectable button full button-font" style="margin-bottom: 5px;background:rgba(217, 217, 217, 0.41);color:#8391A1">{{ _('All submissions') }}</a></div>
+    <div><a href="{{ url('ranked_submissions', problem.code) }}" class="unselectable button full button-font" style="color:#8391A1; background:rgba(217, 217, 217, 0.41); " >{{ _('Best submissions') }}</a></div>
+    <!-- {% if not contest_problem or not contest_problem.contest.hide_problem_tags %}
         <div id="problem-types">
             {% with types=problem.types_list %}
                 <div class="toggle closed unselectable">
@@ -271,8 +338,8 @@
                 {% endwith %}
             </div>
         </div>
-    {% endif %}
-    {% if problem.is_editable_by(request.user) %}
+    {% endif %} -->
+    <!-- {% if problem.is_editable_by(request.user) %}
         <div id="available-judges">
             <i class="fa fa-database fa-fw"></i><span
                 class="pi-name">{% trans trimmed count=available_judges|length %}
@@ -296,9 +363,21 @@
                 {% endif %}
             </div>
         </div>
-    {% endif %}
+    {% endif %} -->
 {% endblock %}
 
+{% block problem_title %}
+            <h2 style="
+            display: inline-block;
+            font-family: Pretendard;
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 28.8px;
+            text-align: center;
+            color: var(--Blackfont, #17171B);
+            margin: 0;
+            ">{{ title }}</h2>
+{% endblock %}
 {% block description %}
     {% cache 86400 'problem_html' problem.id MATH_ENGINE LANGUAGE_CODE %}
         {{ description|markdown(problem.markdown_style, MATH_ENGINE)|reference|str|safe }}

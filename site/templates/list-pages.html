@@ -6,7 +6,7 @@
             <li><a href="{{ page_prefix or '' }}{{ page_obj.previous_page_number() }}{{ page_suffix or '' }}">«</a></li>
         {% endif %}
     {% else %}
-        <li class="disabled-page"><span>«</span></li>
+        <li class="disabled-page"><span>&lt;</span></li>
     {% endif %}
 
     {% for page in page_obj.page_range %}
@@ -26,6 +26,6 @@
     {% if page_obj.has_next() %}
         <li><a href="{{ page_prefix or '' }}{{ page_obj.next_page_number() }}{{ page_suffix or '' }}">»</a></li>
     {% else %}
-        <li class="disabled-page"><span>»</span></li>
+        <li class="disabled-page"><span>&gt;</span></li>
     {% endif %}
 </ul>

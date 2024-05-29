@@ -77,21 +77,21 @@
                 $('#id_language').on('select2:open', function (evt) {
                     var dropdown = $('.select2-dropdown');
                     if (!$('#result-version-info').length)
-                        dropdown.append($("<span id=\"result-version-info\">"));
+                    dropdown.append($("<span id=\"result-version-info\">"));
                     dropdown.attr('id', 'language-select2');
                 });
 
-                $('#id_judge').on('select2:open', function (evt) {
-                    var dropdown = $('.select2-dropdown');
-                    $('#result-version-info').remove();
-                    dropdown.attr('id', 'judge-select2');
-                });
+                // $('#id_judge').on('select2:open', function (evt) {  // 모든 judge 부분
+                //     var dropdown = $('.select2-dropdown');
+                //     $('#result-version-info').remove();
+                //     dropdown.attr('id', 'judge-select2');
+                // });
 
-                $('#id_language').change(function () {
-                    var lang = $("#id_language").find("option:selected").attr('data-ace');
-                    window.ace_source.getSession().setMode("ace/mode/" + lang);
-                    update_language_template();
-                });
+                // $('#id_language').change(function () {
+                //     var lang = $("#id_language").find("option:selected").attr('data-ace');
+                //     window.ace_source.getSession().setMode("ace/mode/" + lang);
+                //     update_language_template();
+                // });
 
                 $('#ace_source').on('ace_load', function (e, editor) {
                     update_language_template();
@@ -158,7 +158,7 @@
                 flex-direction: column-reverse;
             }
 
-            #language-select2 .select2-results__option {
+            #language-select2 .select2-results__option {   
                 color: #757575 !important;
                 background: white !important;
             }
@@ -193,6 +193,77 @@
             }
         </style>
     {% endcompress %}
+    <style>
+        .form-area {
+            width: 62.5%;
+            box-sizing: border-box;
+            margin: 0 auto;
+        }
+        .flex-container {
+            display: flex;
+            flex-direction: row;
+            align-items: left;
+            justify-content: left;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .flex-container #language {
+            width: 30% !important;
+        }
+        .flex-container #language .select2 {
+            width: 100% !important;
+        }
+        .submit-category {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .submit-category .option {
+            display: flex;
+            align-items: center;
+            padding: 6px;
+            border: 1px solid #D9D9D9;
+            border-radius: 70px;
+            cursor: pointer;
+        }
+        .submit-category .option input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .submit-category .option span {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .submit-category .option label {
+            padding:   5px;
+            background-color: #fff;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .language-select {
+            /* 언어 설정 */
+
+            width: 100%;
+            font-family: 'Pretendard';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 125%;
+            /* or 18px */
+            display: flex;
+            align-items: flex-end;
+
+            color: #8391A1;
+        }
+        .submit-bar input{
+            background: none;
+            background-color: #5C95D9;
+            color: #FFFFFF;
+            border-radius: 8px;
+        }
+
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -228,26 +299,40 @@
     <form id="problem_submit" action="" method="post" class="form-area">
         {% csrf_token %}
         {{ form.non_field_errors() }}
+        <div class="flex-container">
+            <div id="language">
+                {{ form.language.errors }}
+                <div id="language-select">
+                    <select id="id_language" name="language">
+                        <option value="" disabled selected hidden>언어 설정</option>
+                        {% for lang in form.fields.language.queryset %}
+                            <option value="{{ lang.id }}" data-id="{{ lang.id }}" data-name="{{ lang.name }}"
+                                    data-info="{{ lang.info }}" data-ace="{{ lang.ace }}"
+                                    data-judge-info="{{ runtime_versions(lang.runtime_versions()) }}"
+                                    {% if lang.id == default_lang.id %}selected{% endif %}>{{ lang.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="submit-category">  
+                <label class="option">
+                    <input type="checkbox" id="all" name="submit_type" value="all">
+                    <span>모듈 전체 제출</span>
+                </label>
+                <label class="option">
+                    <input type="checkbox" id="functional" name="submit_type" value="functional">
+                    <span>함수형 제출</span>
+                </label>
+                
+            </div>
+        </div>
+        
         <div id="submit-wrapper">
             <div id="editor">
                 {{ form.source.errors }}
                 {{ form.source }}
             </div>
-            {% if not no_judges %}
-                <div id="language">
-                    {{ form.language.errors }}
-                    <div id="language-select">
-                        <select id="id_language" name="language">
-                            {% for lang in form.fields.language.queryset %}
-                                <option value="{{ lang.id }}" data-id="{{ lang.id }}" data-name="{{ lang.name }}"
-                                        data-info="{{ lang.info }}" data-ace="{{ lang.ace }}"
-                                        data-judge-info="{{ runtime_versions(lang.runtime_versions()) }}"
-                                        {% if lang.id == default_lang.id %}selected{% endif %}>{{ lang.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            {% endif %}
+
         </div>
 
         <hr>
@@ -257,7 +342,7 @@
         {% else %}
             <div class="submit-bar">
                 {{ form.judge }}
-                <input type="submit" value="{{ _('Submit!') }}" class="button"
+                <input type="submit" value="{{ _('제출하기') }}" class="button"
                        {% if request.in_contest and submission_limit and not submissions_left %}disabled{% endif %}>
             </div>
         {% endif %}

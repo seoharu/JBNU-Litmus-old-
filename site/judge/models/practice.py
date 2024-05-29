@@ -16,7 +16,7 @@ from judge.models.profile import Class, Organization, Profile
 from judge.models.submission import Submission
 from judge.ratings import rate_contest
 
-__all__ = ['Contest', 'ContestTag', 'ContestParticipation', 'ContestProblem', 'ContestSubmission', 'Rating']
+__all__ = ['Practice', 'PracticeTag', 'PracticeParticipation', 'PracticeProblem', 'PracticeSubmission', 'Ratings']
 
 
 class MinValueOrNoneValidator(MinValueValidator):
@@ -24,7 +24,7 @@ class MinValueOrNoneValidator(MinValueValidator):
         return a is not None and b is not None and super().compare(a, b)
 
 
-class ContestTag(models.Model):
+class PracticeTag(models.Model):
     color_validator = RegexValidator('^#(?:[A-Fa-f0-9]{3}){1,2}$', _('Invalid colour.'))
 
     name = models.CharField(max_length=20, verbose_name=_('tag name'), unique=True,
@@ -53,7 +53,7 @@ class ContestTag(models.Model):
         verbose_name_plural = _('contest tags')
 
 
-class Contest(models.Model):
+class Practice(models.Model):
     SCOREBOARD_VISIBLE = 'V'
     SCOREBOARD_AFTER_CONTEST = 'C'
     SCOREBOARD_AFTER_PARTICIPATION = 'P'
@@ -69,14 +69,14 @@ class Contest(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('contest name'), db_index=True)
     authors = models.ManyToManyField(Profile, verbose_name=_('authors'),
                                      help_text=_('These users will be able to edit the contest.'),
-                                     related_name='authored_contests')
+                                     related_name='authored_practices')
     curators = models.ManyToManyField(Profile, verbose_name=_('curators'),
                                       help_text=_('These users will be able to edit the contest, '
                                                   'but will not be listed as authors.'),
-                                      related_name='curated_contests', blank=True)
+                                      related_name='curated_practices', blank=True)
     testers = models.ManyToManyField(Profile, verbose_name=_('testers'),
                                      help_text=_('These users will be able to view the contest, but not edit it.'),
-                                     blank=True, related_name='tested_contests')
+                                     blank=True, related_name='tested_practices')
     tester_see_scoreboard = models.BooleanField(verbose_name=_('testers see scoreboard'), default=False,
                                                 help_text=_('If testers can see the scoreboard.'))
     tester_see_submissions = models.BooleanField(verbose_name=_('testers see submissions'), default=False,
@@ -84,9 +84,9 @@ class Contest(models.Model):
     spectators = models.ManyToManyField(Profile, verbose_name=_('spectators'),
                                         help_text=_('These users will be able to spectate the contest, '
                                                     'but not see the problems ahead of time.'),
-                                        blank=True, related_name='spectated_contests')
+                                        blank=True, related_name='spectated_practices')
     description = models.TextField(verbose_name=_('description'), blank=True)
-    problems = models.ManyToManyField(Problem, verbose_name=_('problems'), through='ContestProblem')
+    problems = models.ManyToManyField(Problem, verbose_name=_('problems'), through='PracticeProblem')
     start_time = models.DateTimeField(verbose_name=_('start time'), db_index=True)
     end_time = models.DateTimeField(verbose_name=_('end time'), db_index=True)
     time_limit = models.DurationField(verbose_name=_('time limit'), blank=True, null=True)
@@ -97,10 +97,10 @@ class Contest(models.Model):
     is_rated = models.BooleanField(verbose_name=_('contest rated'), help_text=_('Whether this contest can be rated.'),
                                    default=False)
     view_contest_scoreboard = models.ManyToManyField(Profile, verbose_name=_('view contest scoreboard'), blank=True,
-                                                     related_name='view_contest_scoreboard',
+                                                     related_name='view_practice_scoreboard',
                                                      help_text=_('These users will be able to view the scoreboard.'))
     view_contest_submissions = models.ManyToManyField(Profile, verbose_name=_('can see contest submissions'),
-                                                      blank=True, related_name='view_contest_submissions',
+                                                      blank=True, related_name='view_practice_submissions',
                                                       help_text=_('These users will be able '
                                                                   'to see in-contest submissions.'))
     scoreboard_visibility = models.CharField(verbose_name=_('scoreboard visibility'), default=SCOREBOARD_VISIBLE,
@@ -116,11 +116,11 @@ class Contest(models.Model):
                                          null=True, blank=True)
     rate_all = models.BooleanField(verbose_name=_('rate all'), help_text=_('Rate all users who joined.'), default=False)
     rate_exclude = models.ManyToManyField(Profile, verbose_name=_('exclude from ratings'), blank=True,
-                                          related_name='rate_exclude+')
+                                          related_name='rate_exclude++')
     is_private = models.BooleanField(verbose_name=_('private to specific users'), default=False)
     private_contestants = models.ManyToManyField(Profile, blank=True, verbose_name=_('private contestants'),
                                                  help_text=_('If non-empty, only these users may see the contest.'),
-                                                 related_name='private_contestants+')
+                                                 related_name='private_practiceants+')
     hide_problem_tags = models.BooleanField(verbose_name=_('hide problem tags'),
                                             help_text=_('Whether problem tags should be hidden by default.'),
                                             default=False)
@@ -142,7 +142,7 @@ class Contest(models.Model):
     limit_join_organizations = models.BooleanField(verbose_name=_('limit organizations that can join'), default=False)
     join_organizations = models.ManyToManyField(Organization, blank=True, verbose_name=_('join organizations'),
                                                 help_text=_('If non-empty, only these organizations may join '
-                                                            'the contest.'), related_name='join_only_contests')
+                                                            'the contest.'), related_name='join_only_practices')
     classes = models.ManyToManyField(Class, blank=True, verbose_name=_('classes'),
                                      help_text=_('If organization private, only these classes may see the contest.'))
     og_image = models.CharField(verbose_name=_('OpenGraph image'), default='', max_length=150, blank=True)
@@ -150,7 +150,7 @@ class Contest(models.Model):
                                            blank=True,
                                            help_text=_('This image will replace the default site logo for users '
                                                        'inside the contest.'))
-    tags = models.ManyToManyField(ContestTag, verbose_name=_('contest tags'), blank=True, related_name='contests')
+    tags = models.ManyToManyField(PracticeTag, verbose_name=_('contest tags'), blank=True, related_name='practices')
     user_count = models.IntegerField(verbose_name=_('the amount of live participants'), default=0)
     summary = models.TextField(blank=True, verbose_name=_('contest summary'),
                                help_text=_('Plain-text, shown in meta description tag, e.g. for social media.'))
@@ -293,20 +293,20 @@ class Contest(models.Model):
 
     @cached_property
     def author_ids(self):
-        return Contest.authors.through.objects.filter(contest=self).values_list('profile_id', flat=True)
+        return Practice.authors.through.objects.filter(practice=self).values_list('profile_id', flat=True)
 
     @cached_property
     def editor_ids(self):
         return self.author_ids.union(
-            Contest.curators.through.objects.filter(contest=self).values_list('profile_id', flat=True))
+            Practice.curators.through.objects.filter(practice=self).values_list('profile_id', flat=True))
 
     @cached_property
     def tester_ids(self):
-        return Contest.testers.through.objects.filter(contest=self).values_list('profile_id', flat=True)
+        return Practice.testers.through.objects.filter(practice=self).values_list('profile_id', flat=True)
 
     @cached_property
     def spectator_ids(self):
-        return Contest.spectators.through.objects.filter(contest=self).values_list('profile_id', flat=True)
+        return Practice.spectators.through.objects.filter(practice=self).values_list('profile_id', flat=True)
 
     def __str__(self):
         return self.name
@@ -460,7 +460,7 @@ class Contest(models.Model):
     def rate(self):
         with transaction.atomic():
             Rating.objects.filter(contest__end_time__range=(self.end_time, self._now)).delete()
-            for contest in Contest.objects.filter(
+            for contest in Practice.objects.filter(
                 is_rated=True, end_time__range=(self.end_time, self._now),
             ).order_by('end_time'):
                 rate_contest(contest)
@@ -483,12 +483,12 @@ class Contest(models.Model):
         verbose_name_plural = _('contests')
 
 
-class ContestParticipation(models.Model):
+class PracticeParticipation(models.Model):
     LIVE = 0
     SPECTATE = -1
 
-    contest = models.ForeignKey(Contest, verbose_name=_('associated contest'), related_name='users', on_delete=CASCADE)
-    user = models.ForeignKey(Profile, verbose_name=_('user'), related_name='contest_history', on_delete=CASCADE)
+    contest = models.ForeignKey(Practice, verbose_name=_('associated contest'), related_name='users_practice', on_delete=CASCADE)
+    user = models.ForeignKey(Profile, verbose_name=_('user'), related_name='practice_history', on_delete=CASCADE)
     real_start = models.DateTimeField(verbose_name=_('start time'), default=timezone.now, db_column='start')
     score = models.FloatField(verbose_name=_('score'), default=0, db_index=True)
     cumtime = models.PositiveIntegerField(verbose_name=_('cumulative time'), default=0)
@@ -579,9 +579,9 @@ class ContestParticipation(models.Model):
         unique_together = ('contest', 'user', 'virtual')
 
 
-class ContestProblem(models.Model):
-    problem = models.ForeignKey(Problem, verbose_name=_('problem'), related_name='contests', on_delete=CASCADE)
-    contest = models.ForeignKey(Contest, verbose_name=_('contest'), related_name='contest_problems', on_delete=CASCADE)
+class PracticeProblem(models.Model):
+    problem = models.ForeignKey(Problem, verbose_name=_('problem'), related_name='practices', on_delete=CASCADE)
+    contest = models.ForeignKey(Practice, verbose_name=_('contest'), related_name='practice_problems', on_delete=CASCADE)
     points = models.IntegerField(verbose_name=_('points'))
     partial = models.BooleanField(default=True, verbose_name=_('partial'))
     is_pretested = models.BooleanField(default=False, verbose_name=_('is pretested'))
@@ -602,13 +602,13 @@ class ContestProblem(models.Model):
         ordering = ('order',)
 
 
-class ContestSubmission(models.Model):
+class PracticeSubmission(models.Model):
     submission = models.OneToOneField(Submission, verbose_name=_('submission'),
-                                      related_name='contest', on_delete=CASCADE)
-    problem = models.ForeignKey(ContestProblem, verbose_name=_('problem'), on_delete=CASCADE,
-                                related_name='submissions', related_query_name='submission')
-    participation = models.ForeignKey(ContestParticipation, verbose_name=_('participation'), on_delete=CASCADE,
-                                      related_name='submissions', related_query_name='submission')
+                                      related_name='practice', on_delete=CASCADE)
+    problem = models.ForeignKey(PracticeProblem, verbose_name=_('problem'), on_delete=CASCADE,
+                                related_name='submissions_practice', related_query_name='submission')
+    participation = models.ForeignKey(PracticeParticipation, verbose_name=_('participation'), on_delete=CASCADE,
+                                      related_name='submissions_practice', related_query_name='submission')
     points = models.FloatField(default=0.0, verbose_name=_('points'))
     is_pretest = models.BooleanField(verbose_name=_('is pretested'),
                                      help_text=_('Whether this submission was ran only on pretests.'),
@@ -619,11 +619,11 @@ class ContestSubmission(models.Model):
         verbose_name_plural = _('contest submissions')
 
 
-class Rating(models.Model):
-    user = models.ForeignKey(Profile, verbose_name=_('user'), related_name='ratings', on_delete=CASCADE)
-    contest = models.ForeignKey(Contest, verbose_name=_('contest'), related_name='ratings', on_delete=CASCADE)
-    participation = models.OneToOneField(ContestParticipation, verbose_name=_('participation'),
-                                         related_name='rating', on_delete=CASCADE)
+class Ratings(models.Model):
+    user = models.ForeignKey(Profile, verbose_name=_('user'), related_name='ratings_practice', on_delete=CASCADE)
+    contest = models.ForeignKey(Practice, verbose_name=_('contest'), related_name='ratings_practice', on_delete=CASCADE)
+    participation = models.OneToOneField(PracticeParticipation, verbose_name=_('participation'),
+                                         related_name='rating_practice', on_delete=CASCADE)
     rank = models.IntegerField(verbose_name=_('rank'))
     rating = models.IntegerField(verbose_name=_('rating'))
     mean = models.FloatField(verbose_name=_('raw rating'))
@@ -636,7 +636,7 @@ class Rating(models.Model):
         verbose_name_plural = _('contest ratings')
 
 
-class ContestMoss(models.Model):
+class PracticeMoss(models.Model):
     LANG_MAPPING = [
         ('C', MOSS_LANG_C),
         ('C++', MOSS_LANG_CC),
@@ -644,8 +644,8 @@ class ContestMoss(models.Model):
         ('Python', MOSS_LANG_PYTHON),
     ]
 
-    contest = models.ForeignKey(Contest, verbose_name=_('contest'), related_name='contest_moss', on_delete=CASCADE)
-    problem = models.ForeignKey(Problem, verbose_name=_('problem'), related_name='contest_moss', on_delete=CASCADE)
+    contest = models.ForeignKey(Practice, verbose_name=_('contest'), related_name='practice_moss', on_delete=CASCADE)
+    problem = models.ForeignKey(Problem, verbose_name=_('problem'), related_name='practice_moss', on_delete=CASCADE)
     language = models.CharField(max_length=10)
     submission_count = models.PositiveIntegerField(default=0)
     url = models.URLField(null=True, blank=True)

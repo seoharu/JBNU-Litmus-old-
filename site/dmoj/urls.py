@@ -11,9 +11,9 @@ from django.views.generic import RedirectView
 from martor.views import markdown_search_user
 
 from judge.feed import AtomBlogFeed, AtomCommentFeed, AtomProblemFeed, BlogFeed, CommentFeed, ProblemFeed
-from judge.sitemap import BlogPostSitemap, ContestSitemap, HomePageSitemap, OrganizationSitemap, ProblemSitemap, \
+from judge.sitemap import BlogPostSitemap, PracticeSitemap, ContestSitemap, HomePageSitemap, OrganizationSitemap, ProblemSitemap, \
     SolutionSitemap, UrlSitemap, UserSitemap
-from judge.views import TitledTemplateView, api, blog, comment, contests, language, license, mailgun, organization, \
+from judge.views import TitledTemplateView, api, blog, comment, practices, contests, language, license, mailgun, organization, \
     preview, problem, problem_manage, ranked_submission, register, stats, status, submission, tasks, ticket, \
     two_factor, user, widgets, texoid
 from judge.views.problem_data import ProblemDataView, ProblemSubmissionDiff, \
@@ -190,6 +190,44 @@ urlpatterns = [
         path('votes/ajax', comment.CommentVotesAjax.as_view(), name='comment_votes_ajax'),
         path('render', comment.CommentContent.as_view(), name='comment_content'),
     ])),
+
+    ## Practice Start ##
+    path('practices/', paged_list_view(practices.ContestList, 'practice_list')),
+    path('practices.ics', practices.ContestICal.as_view(), name='practice_ical'),
+    path('practices/<int:year>/<int:month>/', practices.ContestCalendar.as_view(), name='practices_calendar'),
+    re_path(r'^practices/tag/(?P<name>[a-z-]+)', include([
+        path('', practices.ContestTagDetail.as_view(), name='practice_tag'),
+        path('/ajax', practices.ContestTagDetailAjax.as_view(), name='practice_tag_ajax'),
+    ])),
+
+    path('practices/<str:practices>', include([
+        path('', practices.ContestDetail.as_view(), name='practice_view'),
+        path('/moss', practices.ContestMossView.as_view(), name='practice_moss'),
+        path('/moss/delete', practices.ContestMossDelete.as_view(), name='practice_moss_delete'),
+        path('/clone', practices.ContestClone.as_view(), name='practice_clone'),
+        path('/ranking/', practices.ContestRanking.as_view(), name='practice_ranking'),
+        path('/ranking/ajax', practices.contest_ranking_ajax, name='practice_ranking_ajax'),
+        path('/join', practices.ContestJoin.as_view(), name='practice_join'),
+        path('/leave', practices.ContestLeave.as_view(), name='practice_leave'),
+        path('/stats', practices.ContestStats.as_view(), name='practice_stats'),
+
+        path('/rank/<str:problem>/',
+             paged_list_view(ranked_submission.ContestRankedSubmission, 'practice_ranked_submissions')),
+
+        path('/submissions/<str:user>/',
+             paged_list_view(submission.UserAllContestSubmissions, 'practice_all_user_submissions')),
+        path('/submissions/<str:user>/<str:problem>/',
+             paged_list_view(submission.UserContestSubmissions, 'practice_user_submissions')),
+
+        path('/participations', practices.ContestParticipationList.as_view(), name='practice_participation_own'),
+        path('/participations/<str:user>',
+             practices.ContestParticipationList.as_view(), name='practice_participation'),
+        path('/participation/disqualify', practices.ContestParticipationDisqualify.as_view(),
+             name='practice_participation_disqualify'),
+
+        path('/', lambda _, practice: HttpResponsePermanentRedirect(reverse('practice_view', args=[practice]))),
+    ])),
+    ## Practice End ##
 
     path('contests/', paged_list_view(contests.ContestList, 'contest_list')),
     path('contests.ics', contests.ContestICal.as_view(), name='contest_ical'),

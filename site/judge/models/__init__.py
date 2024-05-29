@@ -2,6 +2,10 @@ from reversion import revisions
 
 from judge.models.choices import ACE_THEMES, EFFECTIVE_MATH_ENGINES, MATH_ENGINES_CHOICES, TIMEZONE
 from judge.models.comment import Comment, CommentLock, CommentVote
+## Practice Start ##
+from judge.models.practice import Practice, PracticeMoss, PracticeParticipation, PracticeProblem, PracticeSubmission, \
+    PracticeTag, Ratings
+## Practice End ##
 from judge.models.contest import Contest, ContestMoss, ContestParticipation, ContestProblem, ContestSubmission, \
     ContestTag, Rating
 from judge.models.interface import BlogPost, MiscConfig, NavigationBar, validate_regex
@@ -18,6 +22,8 @@ from judge.models.ticket import Ticket, TicketMessage
 revisions.register(Profile, exclude=['points', 'last_access', 'ip', 'rating'])
 revisions.register(Problem, follow=['language_limits'])
 revisions.register(LanguageLimit)
+revisions.register(Practice, follow=['practice_problems'])
+revisions.register(PracticeProblem)
 revisions.register(Contest, follow=['contest_problems'])
 revisions.register(ContestProblem)
 revisions.register(Organization)

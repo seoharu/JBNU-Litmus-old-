@@ -76,11 +76,65 @@
             font-size: 12px;
             /* font-size: 14px; */
         }
+        /* 네비게이션 바 */
+        .top-pagination-bar {
+            width: 62.5%;
+            margin: 0 auto;
+            margin-bottom: 21px;
+            margin-top: 21px;
+            justify-content: right;
+        }
+        .top-pagination-bar .select2 {
+            display: flex;
+            flex-direction: row;
+            justify-content: right;
+        }
+        .top-pagination-bar .select2-selection {
+            width: 200px;
+            height: 33px;
+            border: 1px solid #D9D9D9;
+            border-radius: 8px;
+            padding-left: 12px;
+            font-size: 12px;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .top-pagination-bar .select2-selection__rendered {
+            color: #8391A1;
+            font-size: 12px;
+        }
+        .select2-container {
+            
+        }
+        .select2-dropdown {
+            width: 200px !important;
+            border: 1px solid #D9D9D9;
+            border-radius: 8px;
+        }
+        .bottom-pagination-bar {
+            width: 62.5%;
+            margin: 0 auto;
+            margin-bottom: 21px;
+            margin-top: 21px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+        ul.pagination > li > a, ul.pagination > li > span {
+            background: none;
+            border: none;
+        }
+        ul.pagination > .active-page > a, ul.pagination > .active-page > span {
+            background: none;
+            color: #5C95D9;
+        }
     </style>
 {% endblock %}
 
 {% block body %}
-    {% if page_obj and page_obj.has_other_pages() %}
+    <!-- {% if page_obj and page_obj.has_other_pages() %}
         <div class="top-pagination-bar">
             {% include "list-pages.html" %}
             {% if not organization %}
@@ -89,21 +143,32 @@
                 </form>
             {% endif %}
         </div>
-    {% endif %}
+    {% endif %} -->
+
+    <div class="top-pagination-bar">
+        <!-- {% include "list-pages.html" %} -->
+        {% if not organization %}
+            <form id="search-form" name="form" action="{{ url('user_ranking_redirect') }}" method="get">
+                <input id="search-handle" type="text" name="search" placeholder="{{ _('Search by handle...') }}">
+            </form>
+        {% endif %}
+    </div>
 
     <div id="common-content">
         <div id="content-left" class="users">
-            <div class="search-div">
+            <!-- <div class="search-div">
                 <input type="text" class="search-user" placeholder="사용자 검색"></input>
-            </div>
+            </div> -->
             {% block before_users_table %}{% endblock %}
             <div class="h-scrollable-table">
                 {% block users_table %}{% endblock %}
             </div>
         </div>
     </div>
+
     <div class="bottom-pagination-bar">{% include "list-pages.html" %}</div>
-    {% if page_obj and page_obj.has_other_pages() %}
-        
-    {% endif %}
+
+    <!-- {% if page_obj and page_obj.has_other_pages() %}
+        <div class="bottom-pagination-bar">{% include "list-pages.html" %}</div>
+    {% endif %} -->
 {% endblock %}

@@ -1,3 +1,51 @@
+<style>
+    .comment-post-wrapper {
+        padding-bottom: 5px;
+        width: 90%;
+      }
+    .form-area.comment-submit {
+        padding-left: 15px;
+        padding-right: 15px;
+        width: 100%;
+        box-sizing: border-box;
+        background: none;
+      }
+    .new-comments .comment-display {
+        display: flex;
+        padding-left: 1em;
+        padding-top: 0.5em !important;
+        border: 1px solid;
+        border-color: #fff #fff #ccc #fff;
+        border-radius: 0px;
+        background: none;
+        justify-content: space-between;
+        flex:1;
+    }
+    img.user-gravatar{
+        border-radius: 50%;
+        box-shadow: 0 10px 10px -10px #333;
+        width:100%;
+        margin-top: 0px;
+    }
+    .new-comments .comment .detail .header {
+        border-bottom: none;
+    }
+    .comment-submit-form{
+        display: flex;
+        flex-direction: row;
+        height: 107px;
+        width: 100%;
+        justify-content: space-between;
+    }
+    .wmd-input{
+        height: 107px;
+        border-color: #D9D9D9
+    }
+    
+    
+    
+</style>
+
 <div id="comments" class="comment-area">
     <h2><i style="padding-right: 0.3em" class="fa fa-comments"></i>{{ _('Comments') }}</h2>
 
@@ -43,7 +91,7 @@
                             </div>
                             {% with author=node.author, user=node.author.user %}
                                 <a href="{{ url('user_page', user.username) }}" class="user gravatar-main">
-                                    <img src="{{ gravatar(author, 135) }}" class="gravatar">
+                                    <img src="{{ gravatar(author, 75) }}" class="user-gravatar">
                                 </a>
                             {% endwith %}
                         </div>
@@ -52,12 +100,12 @@
                                 <span>
                                     {% with author=node.author, user=node.author.user %}
                                         <a href="{{ url('user_page', user.username) }}" class="user gravatar-mobile">
-                                            <img src="{{ gravatar(author, 135) }}" class="gravatar">
+                                            <img src="{{ gravatar(author, 10) }}" class="user-gravatar">
                                         </a>
                                     {% endwith %}
                                     {{ link_user(node.author) }}&nbsp;
                                 </span>
-                                {% with abs=_('commented on {time}'), rel=_('commented {time}') %}
+                                {% with abs=_('commented on {time}'), rel=_('{time}') %}
                                     {{ relative_time(node.time, abs=abs, rel=rel) }}
                                 {% endwith %}
                                 <span class="comment-spacer"></span>
@@ -79,11 +127,11 @@
                                 {% else %}
                                     <span class="comment-edits"></span>
                                 {% endif %}
-                                    <a href="#comment-{{ node.id }}" title="{{ _('Link') }}"
-                                       class="comment-link"><i class="fa fa-link fa-fw"></i></a>
+                                    <!-- <a href="#comment-{{ node.id }}" title="{{ _('Link') }}"
+                                       class="comment-link"><i class="fa fa-link fa-fw"></i></a> -->
                                     {% if logged_in and not comment_lock %}
                                         {% if perms.judge.change_comment %}
-                                            <a href="javascript:reply_comment({{ node.id }})"
+                                            <!-- <a href="javascript:reply_comment({{ node.id }})"
                                                title="{{ _('Reply') }}"><i class="fa fa-reply fa-fw"></i></a>
                                             <a data-featherlight="{{ url('comment_edit_ajax', node.id) }}"
                                                href="{{ url('comment_edit', node.id) }}" title="{{ _('Edit') }}"
@@ -94,7 +142,7 @@
                                             <a href="javascript:void(0)" title="{{ _('Hide') }}" data-id="{{ node.id }}"
                                                class="hide-comment"><i class="fa fa-trash fa-fw"></i></a>
                                             <a href="{{ url('admin:judge_comment_change', node.id) }}"
-                                               title="{{ _('Admin') }}"><i class="fa fa-cog fa-fw"></i></a>
+                                               title="{{ _('Admin') }}"><i class="fa fa-cog fa-fw"></i></a> -->
                                         {% else %}
                                             {% if node.time > reply_cutoff %}
                                                 <a href="javascript:reply_comment({{ node.id }})"
@@ -138,30 +186,30 @@
     {% if request.user.is_authenticated and comment_form and not comment_lock %}
         <div id="new-comment" class="form-area comment-submit">
             {% block comment_submit_title %}
-                <h3>{{ _('New comment') }}</h3>
-                <hr>
+                <!-- <h3>{{ _('New comment') }}</h3> -->
+                <!-- <hr> -->
             {% endblock %}
             {% if is_new_user %}
                 <div style="margin-bottom: 0" class="alert alert-info">
                     {{ _('You must solve at least one problem before your voice can be heard.') }}
                 </div>
             {% else %}
-                <form class="comment-submit-form" action="" method="post">
-                    {% csrf_token %}
-                    {% if comment_form.errors %}
-                        <div id="form-errors">
-                            {{ comment_form.non_field_errors() }}
-                            {{ comment_form.parent.errors }}
-                            {% if comment_form.body.errors %}{{ _('Invalid comment body.') }}{% endif %}
-                        </div>
-                    {% endif %}
-                    {{ comment_form.parent }}
-                    <div class="comment-post-wrapper">
-                        <div id="comment-form-body">{{ comment_form.body }}</div>
+            <form class="comment-submit-form" action="" method="post">
+                {% csrf_token %}
+                {% if comment_form.errors %}
+                    <div id="form-errors">
+                        {{ comment_form.non_field_errors() }}
+                        {{ comment_form.parent.errors }}
+                        {% if comment_form.body.errors %}{{ _('Invalid comment body.') }}{% endif %}
                     </div>
-                    <hr>
-                    <input style="float:right" type="submit" value="{{ _('Post!') }}" class="button">
-                </form>
+                {% endif %}
+                {{ comment_form.parent }}
+                <div class="comment-post-wrapper">
+                    <div id="comment-form-body">{{ comment_form.body }}</div>
+                </div>                    
+                <input style="float:right" type="submit" value="{{ _('Post!') }}" class="button">
+            </form>
+                
             {% endif %}
         </div>
     {% endif %}

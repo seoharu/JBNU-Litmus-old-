@@ -1,4 +1,60 @@
 {% set can_view, can_edit = submission_layout(submission, profile_id, request.user, completed_problem_ids, editable_problem_ids, tester_problem_ids) %}
+<style>
+    .ploblem-name{
+        color: black;
+    }
+    .submission-row .sub-result .score {
+        font-size: 20px;
+        font-weight: 400px;
+    }
+    .submission-row .sub-result .state {
+        font-size: 12px;
+        font-weight: 400px;
+    }
+    .submission-row .sub-main .sub-inf .name {
+        font-size: 16px;
+        font-weight: 600px;
+    }
+    .submission-row .sub-main .sub-info .time{
+        font-size: 12px;
+        font-weight: 400px;
+        color: #8391A1;
+    }
+    .sub-user {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 130px
+    }
+    .sub-user span a {
+        margin-right: 10px;
+        color: #5C95D9 !important;
+        font-size: 16px;
+        font-weight: 400 !important;
+    }
+    .submission-row .sub-result {
+        border-right: 0;
+        border-bottom: #ccc 1px solid;;
+    }
+    .submission-row .sub-usage {
+        width: 90px;
+        border-left: 0;
+    }
+    .sub-usage .time {
+        text-align: right;
+        font-size: 14px;
+        color: #8391A1;
+        font-weight: 400 !important;
+        margin-right: 10px;
+    }
+    .sub-usage .memory {
+        text-align: right;
+        font-size: 14px;
+        color: #8391A1;
+        font-weight: 400 !important;
+        margin: 0 10px;
+    }
+</style>
 <div class="sub-result {{ submission.result_class }}">
     <div class="score">
         {%- if submission.is_graded -%}
@@ -8,7 +64,7 @@
                 {{ submission.case_points|floatformat(0) }} / {{ submission.case_total|floatformat(0) }}
             {%- endif -%}
         {%- else -%}
-            <i class="fa fa-spinner fa-pulse"></i>
+            <i class="fa fa-spinner fa-pulse grading-spinner"></i>
         {%- endif -%}
     </div>
 
@@ -22,11 +78,10 @@
     <div class="sub-info{% if submission.status == 'G' %} sub-info-grading{% endif %}">
         {% if show_problem %}
             <div class="name">
-                <a href="{{ url('problem_detail', submission.problem.code) }}">{{ problem_name }}</a>
+                <a class="ploblem-name" href="{{ url('problem_detail', submission.problem.code) }}">{{ problem_name }}</a>
             </div>
         {% endif %}
         <div>
-            {{ link_user(submission.user) }}
             <br class="xs-br">
             <span class="time">{{ relative_time(submission.date) }}</span>
             {% if not request.in_contest and submission.contest_object_id %}
@@ -37,7 +92,9 @@
             {% endif %}
         </div>
     </div>
-
+    <div class="sub-user">
+        {{ link_user(submission.user) }}
+    </div>
     {% if submission.status == 'G' %}
         <div class="sub-testcase">
             {%- if submission.current_testcase > 0 -%}

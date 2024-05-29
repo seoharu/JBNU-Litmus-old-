@@ -1,6 +1,27 @@
 {% extends "tabs-base.html" %}
 
 {% block tabs %}
+    <style>
+        .tabs {
+            display: block;
+            border: none;
+        }
+        .tabs h2 {
+            margin-bottom: 15px;
+        }
+        .tabs .tab .tab-icon {
+            display: none;
+        }
+        .tabs .tab a, .tabs .tab span {
+            width: 50px;
+            text-align: center;
+            border: none !important;
+            border-bottom: 5px solid #D9D9D9 !important;
+        }
+        .tabs .tab.active a, .tabs .tab.active span {
+            border-bottom: 5px solid #9FCDF2 !important;
+        }
+    </style>
     {{ make_tab('all_submissions_list', 'fa-list', all_submissions_link, _('All')) }}
     {% if my_submissions_link or tab == 'my_submissions_tab' %}
         {{ make_tab('my_submissions_tab', 'fa-user', my_submissions_link, _('Mine')) }}

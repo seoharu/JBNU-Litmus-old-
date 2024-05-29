@@ -1,10 +1,82 @@
 {% extends "base.html" %}
 
+{% block media %}
+    <style>
+        .auth-flow-form {
+            width: 62.5%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+        .auth-flow-form h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .form-area {
+            width: 45%;
+            border: none;
+            background: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .form-area input[type="email"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 100%;
+            height: 48px;
+            box-sizing: border-box;
+        }
+
+        .form-area button[type="submit"],
+        .form-area button,
+        .form-area .button {
+            background: none;
+            background-color: #5C95D9;
+            display: block;
+            border-radius: 8px;
+            border: 1px solid #5C95D9;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            line-height: 1.5;
+            height: 40px;
+            box-sizing: border-box; /* 패딩과 테두리가 총 크기에 포함되도록 설정 */
+        }
+
+        .form-area a.button {
+            display: block; /* 인라인 요소를 블록 요소로 변경 */
+            text-align: center;
+            padding: 10px; /* 버튼과 동일한 패딩 적용 */
+            font-size: 14px;
+            color: #5C95D9 !important;
+            background: none;
+            background-color: white;
+            border: 1px solid #5C95D9;
+            border-radius: 8px;
+            height: 40px;
+            box-sizing: border-box;
+            line-height: 1.5; /* 텍스트가 버튼의 중앙에 위치하도록 설정 */
+            cursor: pointer;
+            text-decoration: none; /* 기본 링크 스타일 제거 */
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <form action="" method="post" class="form-area">
-        {% csrf_token %}
-        <table border="0">{{ form.as_table() }}</table>
-        <hr>
-        <button style="float:right;" type="submit">{{ _('Send Email') }}</button>
-    </form>
+    <div class="auth-flow-form">
+        <form action="" method="post" class="form-area">
+            <h2>이메일 찾기</h2>
+            {% csrf_token %}
+            <!-- <table border="0">{{ form.as_table() }}</table> -->
+            <span class="fullwidth{% if form.email.errors %}-error{% endif %}">{{ form.email }}</span>
+            <hr>
+            <button style="float:right;" type="submit">{{ _('Send Email') }}</button>
+        </form>
+    </div>
 {% endblock %}

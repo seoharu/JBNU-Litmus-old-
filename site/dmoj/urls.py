@@ -49,6 +49,10 @@ register_patterns = [
     path('password/change/done/', auth_views.PasswordChangeDoneView.as_view(
         template_name='registration/password_change_done.html',
     ), name='password_change_done'),
+    #아이디 찾기 기능 라우팅
+    path('id/find/', user.IdFindView.as_view(), name='id_find'),
+    path('id/find/complete/', user.IdFindCompleteView.as_view(template_name='registration/id_find_complete.html',
+    ), name='id_find_complete'), 
     path('password/reset/', user.CustomPasswordResetView.as_view(), name='password_reset'),
     re_path(r'^password/reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$',
             auth_views.PasswordResetConfirmView.as_view(

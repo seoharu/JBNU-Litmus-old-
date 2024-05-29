@@ -293,3 +293,7 @@ class ProblemPointsVoteForm(ModelForm):
     class Meta:
         model = ProblemPointsVote
         fields = ['points', 'note']
+        
+#아이디 찾기 관련 폼
+class IdFindForm(forms.Form):
+    email = forms.EmailField(label="Email", max_length=254)

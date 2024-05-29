@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block body %}
+    <p>{{ _('If the email you provided is associated with an account, your username has been sent to that email address.') }}</p>
+    <a href="{{ url('auth_login') }}">{{ _('Log in') }}</a>
+{% endblock %}

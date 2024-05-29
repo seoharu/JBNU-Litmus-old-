@@ -8,16 +8,17 @@ from django.conf import settings
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import Permission
+from django.contrib.auth.models import Permission,User
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView, redirect_to_login
 from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
 from django.core.exceptions import PermissionDenied, ValidationError
+from django.core.mail import send_mail
 from django.db.models import Count, Max, Min
 from django.db.models.functions import ExtractYear, TruncDate
 from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
+from django.shortcuts import get_object_or_404, render, resolve_url
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.formats import date_format
 from django.utils.functional import cached_property
@@ -27,7 +28,7 @@ from django.views.decorators.http import require_POST
 from django.views.generic import DetailView, FormView, ListView, TemplateView, View
 from reversion import revisions
 
-from judge.forms import CustomAuthenticationForm, DownloadDataForm, ProfileForm, newsletter_id
+from judge.forms import CustomAuthenticationForm, DownloadDataForm, ProfileForm, newsletter_id, IdFindForm
 from judge.models import Profile, Submission
 from judge.performance_points import get_pp_breakdown
 from judge.ratings import rating_class, rating_progress
@@ -508,3 +509,43 @@ class CustomPasswordResetView(PasswordResetView):
             return HttpResponse(_('You have sent too many password reset requests. Please try again later.'),
                                 content_type='text/plain', status=429)
         return super().post(request, *args, **kwargs)
+
+
+##아이디 찾기 클래스
+class IdFindView(FormView):
+    template_name = 'registration/id_find.html'
+    form_class = IdFindForm
+    success_url = reverse_lazy('id_find_complete')
+    email_context = settings.SITE_ADMIN_EMAIL
+    title = _('아이디 찾기')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.title
+        return context
+    
+    def form_valid(self, form):
+        email = form.cleaned_data['email']
+        try:
+            user = User.objects.get(email=email)
+            send_mail(
+                subject=_('Your Username'),
+                message=_('Your username is: %s' % user.username),
+                from_email=self.email_context,
+                recipient_list=[email],
+                fail_silently=False,
+            )
+        except User.DoesNotExist:
+            pass
+        return super().form_valid(form)
+    
+#아이디 찾기 완료 클래스
+class IdFindCompleteView(TemplateView):
+    template_name = 'registration/id_find_complete.html'
+    title = _('아이디 찾기 완료')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['login_url'] = resolve_url(settings.LOGIN_URL)
+        context['title'] = self.title
+        return context

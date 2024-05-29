@@ -27,6 +27,18 @@ class UserSitemap(Sitemap):
     def location(self, obj):
         return reverse('user_page', args=obj)
 
+## Practice Start ##
+class PracticeSitemap(Sitemap):
+    changefreq = 'hourly'
+    priority = 0.7
+
+    def items(self):
+        return Practice.objects.filter(is_visible=True, is_private=False,
+                                      is_organization_private=False).values_list('key')
+
+    def location(self, obj):
+        return reverse('practice_view', args=obj)
+## Practice End ##
 
 class ContestSitemap(Sitemap):
     changefreq = 'hourly'

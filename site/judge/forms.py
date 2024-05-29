@@ -296,4 +296,8 @@ class ProblemPointsVoteForm(ModelForm):
         
 #아이디 찾기 관련 폼
 class IdFindForm(forms.Form):
-    email = forms.EmailField(label="Email", max_length=254)
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'placeholder': _('이메일')}),
+        max_length=254
+    )
+    # email = forms.EmailField(label="Email", max_length=254)

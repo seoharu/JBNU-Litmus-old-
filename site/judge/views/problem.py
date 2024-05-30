@@ -651,7 +651,7 @@ class ProblemSubmit(LoginRequiredMixin, ProblemMixin, TitleMixin, SingleObjectFo
 
     def get_content_title(self):
         return mark_safe(
-            escape(_('Submit to %s')) % format_html(
+            escape(_('%s 제출하기')) % format_html(
                 '<a href="{0}">{1}</a>',
                 reverse('problem_detail', args=[self.object.code]),
                 self.object.translated_name(self.request.LANGUAGE_CODE),
@@ -659,7 +659,7 @@ class ProblemSubmit(LoginRequiredMixin, ProblemMixin, TitleMixin, SingleObjectFo
         )
 
     def get_title(self):
-        return _('Submit to %s') % self.object.translated_name(self.request.LANGUAGE_CODE)
+        return _('%s 제출하기') % self.object.translated_name(self.request.LANGUAGE_CODE)
 
     def get_initial(self):
         initial = {'language': self.default_language}

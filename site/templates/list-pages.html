@@ -3,10 +3,8 @@
         {% if page_obj.previous_page_number() == 1 and first_page_href != None %}
             <li><a href="{{ first_page_href }}">&lt;</a></li>
         {% else %}
-            <li><a href="{{ page_prefix or '' }}{{ page_obj.previous_page_number() }}{{ page_suffix or '' }}">«</a></li>
+            <li class="disabled-page"><span>&lt;</span></li>
         {% endif %}
-    {% else %}
-        <li class="disabled-page"><span>&lt;</span></li>
     {% endif %}
 
     {% for page in page_obj.page_range %}

@@ -1,5 +1,5 @@
 id: litmus-judge
-key: bR1rPprbtO21r/0W8xsBqrDNKx2cjfLLC4Y0RU3nrRUqwpzTAG2opZAkpWH7pUTKQ/7TICddo7mDtgL1MF0/UUWFve5pKwkU9KZ5
+key: HTrcR9JTDIa5oc74njqCYQ9QPP1pBnK93OMc7Q+jCMYeq8/x5uzdH/eQdB6N5rOvfRx/Ltj2X1ILe9MBek089xFM+0ejRl1zJE27
 problem_storage_globs:
   - /home/ubuntu/problems/*
 runtime:

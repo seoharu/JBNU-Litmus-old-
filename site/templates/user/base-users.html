@@ -166,9 +166,9 @@
         </div>
     </div>
 
-    <div class="bottom-pagination-bar">{% include "list-pages.html" %}</div>
-
-    <!-- {% if page_obj and page_obj.has_other_pages() %}
-        <div class="bottom-pagination-bar">{% include "list-pages.html" %}</div>
-    {% endif %} -->
+    {% if page_obj and page_obj.has_other_pages() %}
+        <div class="bottom-pagination-bar">
+            {% include "list-pages.html" %}
+        </div>
+    {% endif %}
 {% endblock %}

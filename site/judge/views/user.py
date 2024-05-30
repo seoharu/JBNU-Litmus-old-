@@ -41,6 +41,9 @@ from judge.utils.subscription import Subscription
 from judge.utils.unicode import utf8text
 from judge.utils.views import DiggPaginatorMixin, QueryStringSortMixin, TitleMixin, add_file_response, generic_message
 from .contests import ContestRanking
+from django import forms
+from django.contrib.auth.forms import PasswordResetForm
+from django.utils.translation import gettext_lazy as _
 
 __all__ = ['UserPage', 'UserAboutPage', 'UserProblemsPage', 'UserDownloadData', 'UserPrepareData',
            'users', 'edit_profile']
@@ -496,11 +499,17 @@ class UserLogoutView(TitleMixin, TemplateView):
         return HttpResponseRedirect(request.get_full_path())
 
 
+class CustomPasswordResetForm(PasswordResetForm):
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={'placeholder': _('이메일')})
+    )
+    
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'registration/password_reset.html'
     html_email_template_name = 'registration/password_reset_email.html'
     email_template_name = 'registration/password_reset_email.txt'
     extra_email_context = {'site_admin_email': settings.SITE_ADMIN_EMAIL}
+    form_class = CustomPasswordResetForm # 사용자 정의 폼 지정
 
     def post(self, request, *args, **kwargs):
         key = f'pwreset!{request.META["REMOTE_ADDR"]}'

@@ -40,8 +40,9 @@ class CustomRegistrationForm(RegistrationForm):
         widget=forms.PasswordInput(attrs={'placeholder': _('비밀번호 확인')}),
         label=_('Password Confirmation')
     )
-    timezone = ChoiceField(label=_('Timezone'), choices=TIMEZONE,
-                           widget=Select2Widget(attrs={'style': 'width:100%'}))
+    ## html에서 쓰이지 않을 필드는 주석처리 필요
+    # timezone = ChoiceField(label=_('Timezone'), choices=TIMEZONE,
+    #                        widget=Select2Widget(attrs={'style': 'width:100%'}))
     language = ModelChoiceField(queryset=Language.objects.all(), label=_('Preferred language'), empty_label=None,
                                 widget=Select2Widget(attrs={'style': 'width:100%'}))
     organizations = SortedMultipleChoiceField(queryset=Organization.objects.filter(is_open=True),

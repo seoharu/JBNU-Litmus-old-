@@ -9,12 +9,66 @@
         </style>
     </noscript>
     {% if not request.in_contest %}
-        <style>
-            #problem-table th {
-                padding: 0;
-            }
-            
-        </style>
+    <style>
+             
+        #common-content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex;
+            margin-top: 20px;
+        }
+
+        #content-left {
+            width: 60%;
+        }
+
+        #content-right {
+            width: 10%;
+            margin-left: 20px;
+        }
+
+        #problem-list {
+            width: 100%;
+            margin-bottom: 20px;
+            font-family: 'Pretendard';
+            font-style: normal;
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 22px;
+            text-align: left;
+            color: #17171B;
+            border-bottom: 1px solid #D9D9D9;
+            padding-bottom: 10px;
+        }
+
+        #problem-table {
+            box-sizing: border-box;
+            width: 100%;
+            background: #FFFFFF;
+            border: 1px solid #D9D9D9;
+            border-radius: 10px 10px 0px 0px;
+        }
+
+        .problem-table th,
+        .problem-table td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #D9D9D9;
+        }
+
+        #problem-table th {
+            background-color: #fff;
+            color: #17171B;
+            font-weight: bold;
+            border: 1px solid #D9D9D9;
+        }
+
+        .problem-table tr:last-child td {
+            border-bottom: none;
+        }
+    </style>
+
     {% endif %}
 {% endblock %}
 
@@ -158,77 +212,54 @@
     {% endif %}
 
     <div id="common-content">
-        {% block before_table %}{% endblock %}
-        {% if not request.in_contest %}
-            <div id="content-right" class="problems">
-                <div class="info-float">
-                    {% include "problem/search-form.html" %}
-                    {% if hot_problems %}
-                        <div class="sidebox">
-                            <h3>{{ _('Hot problems') }} <i class="fa fa-fire"></i></h3>
-                            <div class="sidebox-content">
-                                <ul class="problem-list">{% for problem in hot_problems %}
-                                    <li><a href="{{ url('problem_detail', problem.code) }}" class="hot-problem-link">
-                                        {{ problem.name }}
-                                    </a></li>
-                                {% endfor %}</ul>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        {% endif %}
+
         <div id="content-left" class="problems h-scrollable-table">
+            <div class="problem-list">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">모든 문제</a>
+                    </li>
+                </ul>
+            </div>
             <table id="problem-table" class="table striped">
+                {% if sort_links %}
                 <thead>
                 <tr>
-                    {% if request.in_contest %}
-                        {% if request.user.is_authenticated %}
-                            <th class="solved"><i class="fa fa-check"></i></th>
-                        {% endif %}
-                        <th class="problem">{{ _('Problem') }}</th>
-                        <th class="category">{{ _('Category') }}</th>
-                        {% if show_types %}
-                            <th>{{ _('Types') }}</th>
-                        {% endif %}
-                        <th class="points">{{ _('Points') }}</th>
-                        <th class="users">{{ _('Users') }}</th>
-                    {% else %}
-                        {% if request.user.is_authenticated %}
-                            <th class="solved">
-                                <a href="{{ sort_links.solved }}">
-                                    <i class="fa fa-check"></i>{{ sort_order.solved }}
-                                </a>
-                            </th>
-                        {% endif %}
-                        <th class="problem">
-                            <a href="{{ sort_links.name }}">{{ _('Problem') }}{{ sort_order.name }}</a>
-                        </th>
-                        <th class="category">
-                            <a href="{{ sort_links.group }}">{{ _('Category') }}{{ sort_order.group }}</a>
-                        </th>
-                        {% if show_types %}
-                            <th class="types">
-                                <a href="{{ sort_links.type }}">{{ _('Types') }}{{ sort_order.type }}</a>
-                            </th>
-                        {% endif %}
-                        <th class="points">
-                            <a href="{{ sort_links.points }}">{{ _('Points') }}{{ sort_order.points }}</a>
-                        </th>
-                        <th class="ac-rate">
-                            <a href="{{ sort_links.ac_rate }}">{{ _('AC %%') }}{{ sort_order.ac_rate }}</a>
-                        </th>
-                        <th class="editorial" title="{{ _('Editorial') }}">
-                            <a href="{{ sort_links.editorial }}">
-                                <i class="fa fa-book"></i>{{ sort_order.editorial }}
+                    {% if request.user.is_authenticated %}
+                        <th class="solved">
+                            <a href="{{ sort_links.solved }}">
+                                <i class="fa fa-check"></i>{{ sort_order.solved }}
                             </a>
                         </th>
-                        <th class="users">
-                            <a href="{{ sort_links.user_count }}">{{ _('Users') }}{{ sort_order.user_count }}</a>
+                    {% endif %}
+                    <th class="problem">
+                        <a href="{{ sort_links.name }}">{{ _('문제') }}{{ sort_order.name }}</a>
+                    </th>
+                    <th class="category">
+                        <a href="{{ sort_links.group }}">{{ _('분류') }}{{ sort_order.group }}</a>
+                    </th>
+                    {% if show_types %}
+                        <th class="types">
+                            <a href="{{ sort_links.type }}">{{ _('Types') }}{{ sort_order.type }}</a>
                         </th>
                     {% endif %}
+                    <th class="points">
+                        <a href="{{ sort_links.points }}">{{ _('포인트') }}{{ sort_order.points }}</a>
+                    </th>
+                    <th class="ac-rate">
+                        <a href="{{ sort_links.ac_rate }}">{{ _('AC %%') }}{{ sort_order.ac_rate }}</a>
+                    </th>
+                    <!-- <th class="editorial" title="{{ _('Editorial') }}">
+                        <a href="{{ sort_links.editorial }}">
+                            <i class="fa fa-book"></i>{{ sort_order.editorial }}
+                        </a>
+                    </th> -->
+                    <th class="users">
+                        <a href="{{ sort_links.user_count }}">{{ _('유저') }}{{ sort_order.user_count }}</a>
+                    </th>
                 </tr>
                 </thead>
+                {% endif %}
                 <tbody>
                 {% for problem in problems %}
                     <tr>
@@ -277,7 +308,7 @@
                         <td class="p">{{ problem.points|floatformat }}{% if problem.partial %}p{% endif %}</td>
                         {% if not request.in_contest %}
                             <td class="ac-rate">{{ problem.ac_rate|floatformat(1) }}%</td>
-                            <td>
+                            <!-- <td>
                                 {% if problem.has_public_editorial %}
                                     <a href="{{ url('problem_editorial', problem.code) }}">
                                         <i class="has-editorial-color fa fa-check-circle"></i>
@@ -285,7 +316,7 @@
                                 {% else %}
                                     <i class="no-editorial-color fa fa-minus-circle"></i>
                                 {% endif %}
-                            </td>
+                            </td> -->
                         {% endif %}
                         <td class="users">
                             <a href="{{ url('ranked_submissions', problem.code) }}">
@@ -301,8 +332,43 @@
                 </tbody>
             </table>
         </div>
+
+                    <!-- {% if request.in_contest %}
+                        {% if request.user.is_authenticated %}
+                            <th class="solved"><i class="fa fa-check"></i></th>
+                        {% endif %}
+                        <th class="problem">{{ _('Problem') }}</th>
+                        <th class="category">{{ _('Category') }}</th>
+                        {% if show_types %}
+                            <th>{{ _('Types') }}</th>
+                        {% endif %}
+                        <th class="points">{{ _('Points') }}</th>
+                        <th class="users">{{ _('Users') }}</th> 
+                        {% endif %}
+                    -->
+                    
+        {% block before_table %}{% endblock %}
+        {% if not request.in_contest %}
+            <div id="content-right" class="problems">
+                <div class="info-float">
+                    {% include "problem/search-form.html" %}
+                    {% if hot_problems %}
+                        <div class="sidebox">
+                            <h3>{{ _('Hot problems') }} <i class="fa fa-fire"></i></h3>
+                            <div class="sidebox-content">
+                                <ul class="problem-list">{% for problem in hot_problems %}
+                                    <li><a href="{{ url('problem_detail', problem.code) }}" class="hot-problem-link">
+                                        {{ problem.name }}
+                                    </a></li>
+                                {% endfor %}</ul>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
     </div>
-   {% if page_obj.has_other_pages() %}
-       <div class="bottom-pagination-bar">{% include "list-pages.html" %}</div>
-   {% endif %}
+    {% if page_obj.has_other_pages() %}
+        <div class="bottom-pagination-bar">{% include "list-pages.html" %}</div>
+    {% endif %}
 {% endblock %}

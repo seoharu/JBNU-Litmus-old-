@@ -294,13 +294,11 @@
 
 {% block body %}
     <style>
-        @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
-        * { font-family: 'Spoqa Han Sans Neo', 'sans-serif'; }
         .AC {
             border-left: 8px solid #94D95C;
             background-color: #f5f5f5;
         }
-        .OLE, .IR {
+        .OLE, .IR, .RTE, .OTH {
             border-left: 8px solid #facc15;
             background-color: #f5f5f5;
         }    
@@ -308,7 +306,7 @@
             border-left: 8px solid #dc2626;
             background-color: #f5f5f5;
         }    
-        .WA, .TLE {
+        .WA, .TLE, .AB, .MLE, .QU, .G {
             border-left: 8px solid #525252;
             background-color: #f5f5f5;
         }   
@@ -359,15 +357,15 @@
         }
         #content {
             margin: 50px auto 0;
-            width: 1000px;
+            width: 62.5%;
         }
         #content-body {
             display: flex;
-            justify-content: center; 
+            flex-direction: column;
         }
         #content-left {
             flex: initial;
-            width: 800px;
+            width: 100%;
         }
         #content-right {
             max-width: 200px !important;
@@ -416,10 +414,22 @@
             flex-direction: column;
             justify-content: center;
         }
+        #common-content {
+            justify-content: center;
+        }
+        .bottom-pagination-bar {
+            margin: 10px auto 0;
+        }
+        ul.pagination > li > span, ul.pagination > li > a {
+            background-color: #fff;
+            color: #000;
+            border: none;
+        }
+        ul.pagination > .active-page > a {
+            background-color: #fff;
+            color: #5C95D9;
+        }
     </style>
-    {% if page_obj.has_other_pages() %}
-        <div class="top-pagination-bar">{% include "list-pages.html" %}</div>
-    {% endif %}
 
     <div id="common-content">
         <div id="content-right" class="submission">

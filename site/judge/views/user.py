@@ -535,17 +535,15 @@ class IdFindView(FormView):
     
     def form_valid(self, form):
         email = form.cleaned_data['email']
-        try:
-            user = User.objects.get(email=email)
-            send_mail(
-                subject=_('Your Username'),
-                message=_('Your username is: %s' % user.username),
-                from_email=self.email_context,
-                recipient_list=[email],
-                fail_silently=False,
-            )
-        except User.DoesNotExist:
-            pass
+        user = get_object_or_404(Profile,user__email=email)
+        send_mail(
+            subject=_('DMOJ 아이디 찾기'),
+            message=_('아이디: %s' % user.username),
+            from_email=self.email_context,
+            recipient_list=[email],
+            fail_silently=False,
+        )
+
         return super().form_valid(form)
     
 #아이디 찾기 완료 클래스

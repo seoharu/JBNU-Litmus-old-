@@ -105,8 +105,12 @@
             color: #8391A1;
             font-size: 12px;
         }
-        .select2-container {
-            
+        .select2-search--dropdown .select2-search__field {
+            border: 1px solid #D9D9D9;
+            border-radius: 8px;
+        }
+        .select2-search--dropdown {
+            left: 62.5%;
         }
         .select2-dropdown {
             width: 200px !important;
@@ -166,9 +170,13 @@
         </div>
     </div>
 
-    {% if page_obj and page_obj.has_other_pages() %}
+    <div class="bottom-pagination-bar">
+        {% include "list-pages.html" %}
+    </div>
+
+    <!-- {% if page_obj and page_obj.has_other_pages() %}
         <div class="bottom-pagination-bar">
             {% include "list-pages.html" %}
         </div>
-    {% endif %}
+    {% endif %} -->
 {% endblock %}

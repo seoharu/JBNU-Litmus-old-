@@ -30,7 +30,7 @@ img {
 }
 
 table.sortable thead {
-  background-color: #eee;
+  background-color: #000;
   color: #666;
   font-weight: bold;
   cursor: default;
@@ -2195,7 +2195,7 @@ a.view-pdf {
 }
 
 .button, button, input[type=submit] {
-  color: white;
+  color: white !important;
   text-decoration: none !important;
   cursor: pointer;
   vertical-align: middle;
@@ -3463,8 +3463,6 @@ form.contest-join-pseudotab {
   padding: 6px 8px !important;
   line-height: 1.7em;
   margin-left: 0.5em;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
 }
 form.contest-join-pseudotab input {
   display: inline;

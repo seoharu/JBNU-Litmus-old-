@@ -64,6 +64,70 @@ class ContestListMixin(object):
     def get_queryset(self):
         return Contest.get_visible_contests(self.request.user)
 
+class ContestPastList(QueryStringSortMixin, DiggPaginatorMixin, TitleMixin, ContestListMixin, ListView):
+    model = Contest
+    paginate_by = 20
+    template_name = 'contest/pastlist.html'
+    title = gettext_lazy('Contests')
+    context_object_name = 'past_contests'
+    all_sorts = frozenset(('name', 'user_count', 'start_time'))
+    default_desc = frozenset(('name', 'user_count'))
+    default_sort = '-start_time'
+
+    @cached_property
+    def _now(self):
+        return timezone.now()
+
+    def _get_queryset(self):
+        return super().get_queryset().prefetch_related(
+            'tags',
+            'organizations',
+            'authors',
+            'curators',
+            'testers',
+            'spectators',
+        )
+
+    def get_queryset(self):
+        return self._get_queryset().order_by(self.order, 'key').filter(end_time__lt=self._now)
+
+    def get_context_data(self, **kwargs):
+        context = super(ContestPastList, self).get_context_data(**kwargs)
+        present, active, future = [], [], []
+        finished = set()
+        for contest in self._get_queryset().exclude(end_time__lt=self._now):
+            if contest.start_time > self._now:
+                future.append(contest)
+            else:
+                present.append(contest)
+
+        if self.request.user.is_authenticated:
+            for participation in (
+                ContestParticipation.objects.filter(virtual=0, user=self.request.profile, contest_id__in=present)
+                .select_related('contest')
+                .prefetch_related('contest__authors', 'contest__curators', 'contest__testers', 'contest__spectators')
+                .annotate(key=F('contest__key'))
+            ):
+                if participation.ended:
+                    finished.add(participation.contest.key)
+                else:
+                    active.append(participation)
+                    present.remove(participation.contest)
+
+        active.sort(key=attrgetter('end_time', 'key'))
+        present.sort(key=attrgetter('end_time', 'key'))
+        future.sort(key=attrgetter('start_time'))
+        context['active_participations'] = active
+        context['current_contests'] = present
+        context['future_contests'] = future
+        context['finished_contests'] = finished
+        context['now'] = self._now
+        context['first_page_href'] = '.'
+        context['page_suffix'] = '#past-contests'
+        context.update(self.get_sort_context())
+        context.update(self.get_sort_paginate_context())
+        return context
+
 
 class ContestList(QueryStringSortMixin, DiggPaginatorMixin, TitleMixin, ContestListMixin, ListView):
     model = Contest

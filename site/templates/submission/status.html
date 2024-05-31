@@ -1,35 +1,4 @@
 {% extends "submission/info-base.html" %}
-
-
-{% block media %}
-<style>
-    .resubmit {
-            /* Group 38 */
-
-        position: absolute;
-        left: 73.44%;
-        right: 20.47%;
-        top: 18.15%;
-        bottom: 79.17%;
-
-    }
-    .resubmit #submit {
-        background-color: #5C95D9;
-        border-radius: 8px;
-
-        color: white;
-        padding: 8px 16px;
-        border: none;
-        cursor: pointer;
-    }
-    
-    .resubmit #submit:hover {
-        background-color: #4c7cb8;
-    }
-</style>
-        
-{% endblock %}
-
 {% block js_media %}
     <script type="text/javascript" src="{{ static('event.js') }}"></script>
     {% if not submission.is_graded and last_msg %}
@@ -102,14 +71,7 @@
     <br>
     <div><a href="{{ url('submission_source', submission.id) }}">{{ _('View source') }}</a></div>
     {% if request.user == submission.user.user or perms.judge.resubmit_other %}
-        <div>
-            <div class="resubmit">
-                <a href="{{ url('problem_submit', submission.problem.code, submission.id) }}"></a>
-                <input type="submit" value="{{ _('다시 제출하기') }}" class="button"
-                       {% if request.in_contest and submission_limit and not submissions_left %}disabled{% endif %}>
-            </div>
-            
-        </div>
+        <div><a href="{{ url('problem_submit', submission.problem.code, submission.id) }}">{{ _('다시 제출') }}</a></div>
     {% endif %}
     {% if perms.judge.rejudge_submission and not submission.is_locked %}
         {% compress js %}
@@ -132,7 +94,7 @@
     {% endif %}
 
     <br>
-    <!-- <hr class="half-hr"> -->
+    <hr class="half-hr">
     <br>
 
     <div id="test-cases">{% include "submission/status-testcases.html" %}</div>

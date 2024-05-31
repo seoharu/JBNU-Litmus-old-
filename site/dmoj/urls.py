@@ -37,7 +37,7 @@ register_patterns = [
     path('register/', RegistrationView.as_view(), name='registration_register'),
     path('register/complete/',
          TitledTemplateView.as_view(template_name='registration/registration_complete.html',
-                                    title=_('Registration Completed')),
+                                    title=_('회원가입 완료')),
          name='registration_complete'),
     path('register/closed/',
          TitledTemplateView.as_view(template_name='registration/registration_closed.html',

@@ -1,4 +1,24 @@
 {% extends "base.html" %}
+
+{% block media %}
+<style>
+    .message-container {
+        height: 200px;
+        background-color: #f5f5f5;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        margin: 20px;
+    }
+    .message-text {
+        font-size: 18px;
+        color: #333;
+        text-align: center;
+    }
+</style>
+
+{% endblock %}
 {% block body %}
-    <p>{{ _('You have successfully been registered. An email has been sent to the email address you provided to confirm your registration.') }}</p>
+    <div class="message-continer">
+        <p class="message-text">{{ _('등록이 완료되었습니다. 입력하신 이메일을 확인해주세요.') }}</p>
+    </div>
 {% endblock %}

@@ -47,6 +47,7 @@
             font-size: 13px;
             padding-top: 25px;
             padding-bottom: 25px;
+            margin-right: 10px;
         }
         .content-submission #total-point b {
             font-size: 22px;
@@ -91,7 +92,7 @@
 <div class="content-submission">
     {% if pp_breakdown %}
         <!-- <h3 class="pp-breakdown-header">{{ _('Points breakdown') }}</h3> -->
-        <div id="total-point">총점  <b>2341pp</b></div>
+        <div id="total-point">총점<b>{{ user.performance_points|floatformat(0) }}pp</b></div>
         <div id="submissions-table" class="pp-table table">
             <div class="sub-table-head">
                 <div class="zero-head"></div>

@@ -1,73 +1,268 @@
+<style>
+    .sidebox {
+
+        /* Rectangle 198 */
+
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        background: #FFFFFF;
+        border: 1px solid #D9D9D9;
+        border-radius: 10px;
+        padding: 20px;
+
+    }
+    
+
+    .sidebox h3 {
+        background-color: #D9D9D9;
+        color: #17171B;
+        font-size: 14px;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+        font-weight: 2000;
+        font-family: 'Pretendard';
+    }
+
+    .sidebox-content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+    
+    #search {
+        margin-bottom: 10px; /* 문제 검색과 문제 분류 사이 여백 */
+        padding: 5px;
+        border: 1px solid #D9D9D9;
+        border-radius: 3px;
+    }
+    
+    .filter-form-group {
+        margin-bottom: 15px;
+    }
+    
+    .filter-form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    
+    .problem-types-container {
+        display: flex;
+        flex-direction: row;
+        text-align: left;
+        border: 1px solid #D9D9D9;
+        border-radius: 20px;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        margin-right: 10px;
+        padding: 2px;
+    }
+    .problem-types-container label {
+        display: flex;
+        margin: 5px 10px;
+        align-items: center;
+    }
+    .problem-types-container input[type=checkbox] + label{
+        border-radius: 50%;
+        margin: 5px 5px;
+        align-items: center;
+    }
+
+    .problem-types-container select {
+        width: 100%;
+        padding: 5px;
+        border: 1px solid #D9D9D9;
+        border-radius: 200px;
+        margin-right: 10px;
+    }
+    .filter-form-group select {
+        width: 100%;
+        padding: 5px;
+        border: 1px solid #D9D9D9;
+        border-radius: 300px;
+    }
+    
+    .filter-checkboxes {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .filter-checkboxes label {
+        display: inline-block;
+        margin-left: 5px;
+    }
+
+    .filter-checkbox {
+        margin-bottom: 5px;
+    }
+    
+    .filter-range {
+        margin-top: 10px;
+    }
+     
+    .noUi-connect {
+        background: linear-gradient(90deg, #5C95D9, #9FCDF2);
+    }
+    .filter-form-group .buttons {
+        text-align: center;
+        margin-top: 15px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+    }
+    
+    .filter-form-group button {
+        display: flex;
+        padding: 8px 15px;
+        font-size: 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        background-color: #5C95D9;
+        color: #fff;
+        border: none;
+    }
+
+    .problem-container-div {
+        display: flex;
+        flex-direction: row;
+        justify-items: center;
+    }
+
+    
+    .algo-types-container {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        padding: 5px 10px;
+        background-color: #e5f6d5;
+        width: fit-content;
+        margin-right: 5px;
+    }
+
+    .types-container {
+        border: 1px solid #D9D9D9;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: row;
+        justify-items: center;
+        padding: 5px 5px;
+        margin-right: 5px;
+    }
+
+    .types-text {
+        color: #4CAF50;
+        font-size: 14px;
+        margin-right: 10px;
+        font-weight: 550;
+    }
+
+    .types-close {
+        color: #9E9E9E;
+        font-size: 14px;
+        cursor: pointer;
+    }
+/* 
+    .problem_types {
+        display: flex;
+        flex-direction: column;
+        
+    }
+
+    input[type="problem_types"]{
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        border:3px solid #707070;
+        border: 3px solid #D6D6D6;
+      }
+    input[id="problem_types"]:checked{
+        content:'✔';
+        font-size: 14px;
+        width: 15px;
+        height: 15px;
+        text-align: center;
+        left: 0;
+        top:0;
+      } */
+
+      
+</style>
+
+       
 <div class="sidebox">
-    <h3>{{ _('Problem search') }} <i class="fa fa-search"></i>
+    <h3>{{ _('필터') }} 
     </h3>
     <div class="sidebox-content">
         <form id="filter-form" name="form" action="" method="get">
             <div>
                 <input id="search" type="text" name="search" value="{{ search_query or '' }}"
-                       placeholder="{{ _('Search problems...') }}">
+                       placeholder="문제 검색"> 
+                       <!-- <i class="fa fa-search"></i> -->
             </div>
-            {% if has_fts %}
-                <div>
-                    <input id="full_text" type="checkbox" name="full_text" value="1"
-                           {% if full_text %}checked{% endif %}>
-                    <label for="full_text">{{ _('Full text search') }}</label>
+       
+            <div class="filter-form-group">  
+                <label for="problem_types">문제 분류</label>
+                {% if request.user.is_authenticated %}
+                <div class="problem-container-div">
+                    <div class="problem-types-container">
+                        <input id="hide_solved" type="checkbox" name="hide_solved" value="1"
+                            {% if hide_solved %}checked{% endif %}>
+                        <label for="hide_solved">{{ _('푼 문제 숨기기') }}</label>
+                    </div>
+                    
+                    <div class="problem-types-container">
+                        <input id="has_public_editorial" type="checkbox" name="has_public_editorial" value="1"
+                                {% if has_public_editorial %} checked{% endif %}>
+                        <label for="has_public_editorial">{{ _('해설 포함') }}</label>
+                    </div>
                 </div>
-            {% endif %}
-            {% if request.user.is_authenticated %}
-                <div>
-                    <input id="hide_solved" type="checkbox" name="hide_solved" value="1"
-                           {% if hide_solved %}checked{% endif %}>
-                    <label for="hide_solved">{{ _('Hide solved problems') }}</label>
-                </div>
-            {% endif %}
-            <div>
-                <input id="has_public_editorial" type="checkbox" name="has_public_editorial" value="1"
-                        {% if has_public_editorial %} checked{% endif %}>
-                <label for="has_public_editorial">{{ _('Has editorial') }}</label>
+                {% endif %}
             </div>
-            <div>
-                <input id="show_types" type="checkbox" name="show_types" value="1"
-                        {% if show_types %} checked{% endif %}>
-                <label for="show_types">{{ _('Show problem types') }}</label>
-            </div>
+              
             <div class="filter-form-group">
-                <label for="category"><i>{{ _('Category') }}</i></label>
-                <select id="category" name="category">
-                    {% if category %}
-                        <option value="" selected="selected">{{ _('All') }}</option>
-                    {% else %}
-                        <option value="">{{ _('All') }}</option>{% endif %}
-                    <option disabled="disabled">---</option>
-                    {% for group in categories %}
-                        <option value="{{ group.id }}"{% if group.id == category %} selected{% endif %}>
-                            {{ group.full_name }}
-                        </option>
-                    {% endfor %}
-                </select>
+                <label for="algo_types">알고리즘 분류</label>
+                    <div class="types-container">
+                        <div class="algo-types-container">
+                            <div class="types-text">수학</div>
+                            <div class="types-close">✖</div>
+                        </div>
+                    </div>
+               
+                    <!-- {% for type in algo_types %}
+                    <option value="{{ type.id }}" {% if type.id in selected_algo_types %} selected{% endif %}>
+                        {{ user_trans(type.full_name) }}
+                    </option>
+                    {% endfor %} -->
             </div>
-            {% if show_types %}
-                <div class="filter-form-group">
-                    <label for="type"><i>{{ _('Problem types') }}</i></label>
-                    <select id="types" name="type" multiple>
-                        {% for type in problem_types %}
-                            <option value="{{ type.id }}"{% if type.id in selected_types %} selected{% endif %}>
-                                {{ user_trans(type.full_name) }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
-            {% endif %}
+
             {% if point_values %}
-                <div class="form-label">{{ _('Point range') }}</div>
-                <div id="point-slider"></div>
+                <div class="filter-form-group">
+                    <label>포인트 범위</label>
+                    <div id="point-slider" class="filter-range"></div>
+                        <input id="point-start" type="hidden" name="point_start" {% if point_start and point_start != point_values.min %}value="{{ point_start }}"{% else %}disabled{% endif %}>
+                        <input id="point-end" type="hidden" name="point_end" {% if point_end and point_end != point_values.max %}value="{{ point_end }}"{% else %}disabled{% endif %}>
+                    </div>
+                <!-- </div> -->
             {% endif %}
-            <input id="point-start" type="hidden" name="point_start" {% if point_start and point_start != point_values.min %}value="{{ point_start }}"{% else %}disabled{% endif %}>
-            <input id="point-end" type="hidden" name="point_end" {% if point_end and point_end != point_values.max %}value="{{ point_end }}"{% else %}disabled{% endif %}>
-            <div class="form-submit-group">
-                <a id="go" class="button">{{ _('Go') }}</a>
-                <a id="random" class="button">{{ _('Random') }}</a>
+
+
+            <div class="filter-form-group">
+                <div class="buttons">
+                    <button type="submit" id="go" class="button">적용</button>
+                </div>
             </div>
+
         </form>
     </div>
 </div>
+
+
+         
+          
+    

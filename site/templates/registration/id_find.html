@@ -2,8 +2,12 @@
 
 {% block media %}
     <style>
-        .auth-flow-form {
+        #content {
+            margin: 50px auto 0;
             width: 62.5%;
+        }
+        .auth-flow-form {
+            width: 100%;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
@@ -76,12 +80,12 @@
 {% block body %}
     <div class="auth-flow-form">
         <form action="" method="post" class="form-area">
-            <h2>이메일 찾기</h2>
+            <h2>아이디 찾기</h2>
             {% csrf_token %}
             <!-- <table border="0">{{ form.as_table() }}</table> -->
             <span class="fullwidth{% if form.email.errors %}-error{% endif %}">{{ form.email }}</span>
             <hr>
-            <button style="float:right;" type="submit">{{ _('Send Email') }}</button>
+            <button style="float:right;" type="submit">{{ _('아이디 발송하기') }}</button>
         </form>
     </div>
 {% endblock %}

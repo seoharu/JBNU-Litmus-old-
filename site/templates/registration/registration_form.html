@@ -4,8 +4,12 @@
     {% include "timezone/media-css.html" %}
     {{ form.media.css }}
     <style>
+        #content {
+            margin: 50px auto 0;
+            width: 62.5%;
+        }
         .auth-flow-form {
-            max-width: 62.5%;
+            max-width: 100%;
             margin: 50px auto;
             padding: 20px;
             background-color: white;
@@ -108,8 +112,7 @@
         #center-float {
             display: inline-block;
             text-align: initial;
-            max-width: 100%;
-            width: 62.5%;
+            width: 100%;
         }
 
         ul.errorlist {

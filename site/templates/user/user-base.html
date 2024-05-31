@@ -11,7 +11,6 @@
             margin: 0 auto;
         }
     </style>
-    <!-- 아래 style 부분이 안먹혀서 style.css에 적용했습니다 -->
 {% endblock %}
 
 {% block js_media %}
@@ -19,6 +18,98 @@
 {% endblock %}
 
 {% block body %}
+    <style>
+        #content {
+            margin: 50px auto 0;
+            width: 62.5%;
+        }
+        .user-info-page {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .user-sidebar-area {
+            width: 100%;
+            background-color: white !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .user-sidebar {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            padding-bottom: 30px;
+            /* width: 150px;
+            padding-left: 15px; */
+        }
+        img.user-gravatar {
+            display: block;
+            border-radius: 50%;
+            border: 3px solid #ccc;
+            width: 20%;
+            height: auto;
+            background-color: white;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .user-content-area {
+            width: 100%;
+            background-color: #F9FAFB;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .user-content {
+            flex: 1 1;
+            overflow: hidden;
+            word-wrap: break-word;
+        }
+        .user-info-text {
+            display: flex;
+            flex-direction: column;
+            /* align-items: center; */
+            justify-content: center;
+            margin-left: 30px;
+        }
+        .user-info-text .num-style {
+            font-size: 22px;
+            color: #5C95D9;
+        }
+        .user-info-text .semibold {
+            font-size: 15px;
+            color: #8391A1;
+        }
+        .user-info-text .button-sub {
+            background-color: #EBEFF3;
+            color: #5C95D9;
+            border-radius: 10px;
+            font-size: 13px;
+            width: 100px;
+            /* height: 35px; */
+            text-align: center;
+            line-height: 2.8;
+            margin-top: 5px;
+        }
+        .user-info-text-1 {
+            display: flex;
+            flex-direction: column;
+        }
+        .user-info-text-1 h3 {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .user-info-text-1 p {
+            font-size: 15px;
+            color: #8391A1;
+            margin-top: 3px;
+        }
+        .user-info-text-2 {
+            display: flex;
+            flex-direction: row;
+            gap: 4vw;
+        }
+    </style>
     <div class="user-info-page">
         <div class="user-sidebar-area">
             <div class="user-sidebar">

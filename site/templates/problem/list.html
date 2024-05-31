@@ -8,13 +8,16 @@
         }
         </style>
     </noscript>
-    {% if not request.in_contest %}
+    
     <style>
-             
+        #content {
+            margin: 50px auto 0;
+            width: 62.5%;
+        }
         #common-content {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
             align-items: flex;
             margin-top: 20px;
         }
@@ -22,7 +25,7 @@
         .problem-list {
             display: flex;
             flex-direction: column;
-            width: 100%;
+            justify-content: flex-start;
             margin-bottom: 20px;
             font-family: 'Pretendard';
             font-style: normal;
@@ -38,6 +41,7 @@
         .content-container {
             display: flex;
             flex-direction: row;
+            width: 100%;
         }
         #content-left {
             display: flex;
@@ -46,7 +50,7 @@
 
         #content-right {
             display: flex;
-            width: 10%;
+            width: 30%;
             margin-left: 20px;
             
         }
@@ -76,9 +80,25 @@
         .problem-table tr:last-child td {
             border-bottom: none;
         }
+
+        .bottom-pagination-bar {
+            margin: 10px auto 0;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+        }
+        ul.pagination > li > span, ul.pagination > li > a {
+            background-color: #fff;
+            color: #000;
+            border: none;
+        }
+        ul.pagination > .active-page > a {
+            background-color: #fff;
+            color: #5C95D9;
+        }
     </style>
 
-    {% endif %}
+    
 {% endblock %}
 
 {% block js_media %}
@@ -216,18 +236,18 @@
 {% endblock %}
 
 {% block body %}
-    {% if page_obj.has_other_pages() %}
+    <!-- {% if page_obj.has_other_pages() %}
         <div class="top-pagination-bar">{% include "list-pages.html" %}</div>
-    {% endif %}
+    {% endif %} -->
 
     <div id="common-content">
-        <div class="problem-list">
+        <!-- <div class="problem-list">
             <ul class="nav nav-tabs">
-                <li class="nav-item">
+                <div class="nav-item">
                     <a class="nav-link active" href="#">모든 문제</a>
-                </li>
+                </div>
             </ul>
-        </div>
+        </div> -->
         <div class="content-container">
             <div id="content-left" class="problems h-scrollable-table">
                 <table id="problem-table" class="table striped">

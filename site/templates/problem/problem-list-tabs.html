@@ -1,6 +1,28 @@
 {% extends "tabs-base.html" %}
 
 {% block tabs %}
+    <style>
+        .tabs {
+            display: block;
+            border: none;
+        }
+        .tabs h2 {
+            margin-bottom: 15px;
+        }
+        .tabs .tab .tab-icon {
+            display: none;
+        }
+        .tabs .tab a, .tabs .tab span {
+            width: 50px;
+            text-align: center;
+            border: none !important;
+            border-bottom: 5px solid #D9D9D9 !important;
+        }
+        .tabs .tab.active a, .tabs .tab.active span {
+            border-bottom: 5px solid #9FCDF2 !important;
+        }
+    </style>
+
     {% if perms.judge.edit_all_problem or perms.judge.edit_public_problem or perms.judge.edit_own_problem %}
         {{ make_tab('list', 'fa-list', url('problem_list'), _('List')) }}
         {{ make_tab('admin', 'fa-edit', url('admin:judge_problem_changelist'), _('Admin')) }}

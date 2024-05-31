@@ -39,6 +39,7 @@
 
 {% block body %}
     {% block before_posts %}{% endblock %}
+    <!-- mobile div는 현재 숨겨져 있음. 기능은 잘 모르겠다. -->
     <div id="mobile" class="tabs">
         <ul>
             <li id="blog-tab" class="tab active"><a href="#">
@@ -47,6 +48,7 @@
             <li id="event-tab" class="tab"><a href="#"><i class="tab-icon fa fa-rss"></i> {{ _('Events') }}</a></li>
         </ul>
     </div>
+    <!-- 메인 페이지의 내용 부분. -->
     <div id="blog-container">
         <div class="blog-content sidebox">
             <h3>{{ _('News') }} <i class="fa fa-terminal"></i></h3>

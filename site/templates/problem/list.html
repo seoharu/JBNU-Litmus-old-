@@ -263,7 +263,7 @@
                 <tbody>
                 {% for problem in problems %}
                     <tr>
-                        {% if request.user.is_authenticated %}
+                        <!-- {% if request.user.is_authenticated %} -->
                             {% if problem.id in completed_problem_ids %}
                                 <td solved="1">
                                     <a href="{{ url('user_submissions', problem.code, request.user.username) }}">
@@ -293,7 +293,7 @@
                                     {% endif %}
                                 </td>
                             {% endif %}
-                        {% endif %}
+                        <!-- {% endif %} -->
                         <td class="problem">
                             <a href="{{ url('problem_detail', problem.code) }}">{{ problem.i18n_name or problem.name }}</a>
                         </td>
@@ -326,6 +326,17 @@
                                     ???
                                 {% endif %}
                             </a>
+                            <!-- {% if request.user.is_authenticated %}
+                            <th class="solved"><i class="fa fa-check"></i></th>
+                            {% endif %}
+                            <th class="problem">{{ _('Problem') }}</th>
+                            <th class="category">{{ _('Category') }}</th>
+                            {% if show_types %}
+                                <th>{{ _('Types') }}</th>
+                            {% endif %}
+                            <th class="points">{{ _('Points') }}</th>
+                            <th class="users">{{ _('Users') }}</th>  -->
+                         
                         </td>
                     </tr>
                 {% endfor %}

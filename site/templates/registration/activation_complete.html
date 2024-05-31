@@ -1,4 +1,25 @@
 {% extends "base.html" %}
+
+{% block media %}
+<style>
+    .message-container {
+        height: 200px;
+        background-color: #f5f5f5;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        margin: 20px;
+    }
+    .message-text {
+        font-size: 18px;
+        color: #333;
+        text-align: center;
+    }
+</style>
+
+{% endblock %}
+
 {% block body %}
-    <p>{{ _('Your account has been successfully activated.') }}</p>
+    <div class="message-continer">
+        <p class="message-text">{{ _('계정이 성공적으로 생성되었습니다.') }}</p>
+    </div>
 {% endblock %}

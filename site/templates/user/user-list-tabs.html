@@ -1,6 +1,51 @@
 {% extends "tabs-base.html" %}
 
+{% block media %}
+    <style>
+        .tabs {
+            display: block;
+            border: none;
+        }
+        .tabs h2 {
+            margin-bottom: 15px;
+        }
+        .tabs .tab .tab-icon {
+            display: none;
+        }
+        .tabs .tab a, .tabs .tab span {
+            width: 50px;
+            text-align: center;
+            border: none !important;
+            border-bottom: 5px solid #D9D9D9 !important;
+        }
+        .tabs .tab.active a, .tabs .tab.active span {
+            border-bottom: 5px solid #9FCDF2 !important;
+        }
+    </style>
+{% endblock %}
+
 {% block tabs %}
+    <style>
+        .tabs {
+            display: block;
+            border: none;
+        }
+        .tabs h2 {
+            margin-bottom: 15px;
+        }
+        .tabs .tab .tab-icon {
+            display: none;
+        }
+        .tabs .tab a, .tabs .tab span {
+            width: 50px;
+            text-align: center;
+            border: none !important;
+            border-bottom: 5px solid #D9D9D9 !important;
+        }
+        .tabs .tab.active a, .tabs .tab.active span {
+            border-bottom: 5px solid #9FCDF2 !important;
+        }
+    </style>
     {{ make_tab('list', 'fa-users', url('user_list'), _('Leaderboard')) }}
     {{ make_tab('organizations', 'fa-university', url('organization_list'), _('Organizations')) }}
 {% endblock %}

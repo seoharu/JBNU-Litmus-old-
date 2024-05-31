@@ -4,8 +4,12 @@
     {% include "timezone/media-css.html" %}
     {{ form.media.css }}
     <style>
+        #content {
+            margin: 50px auto 0;
+            width: 62.5%;
+        }
         .auth-flow-form {
-            max-width: 62.5%;
+            max-width: 100%;
             margin: 50px auto;
             padding: 20px;
             background-color: white;
@@ -108,8 +112,7 @@
         #center-float {
             display: inline-block;
             text-align: initial;
-            max-width: 100%;
-            width: 62.5%;
+            width: 100%;
         }
 
         ul.errorlist {
@@ -129,6 +132,41 @@
 
         .pass-req {
             padding: 0;
+        }
+        .form-area .password-rule {
+            border-radius: 8px;
+            border: 1px solid #5C95D9;
+            text-align: left;
+            margin-bottom: 10px;
+            cursor: pointer;
+            /* margin-left: 10px; */
+        }
+        .form-area .password-rule p {
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            padding-left: 10px;
+            color: #5C95D9;
+            margin: 0;
+            height: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .form-area .password-rule p:hover {
+            color: #5C95D9;
+        }
+        .form-area .password-rule ul {
+            margin-block-start: 5px;
+            margin-block-end: 5px;
+            padding-inline-start: 20px;
+            display: none;
+            list-style: circle;
+            margin-bottom: 10px;
+        }
+        .form-area .password-rule ul li {
+            font-size: 14px;
+            margin-top: 5px;
         }
     </style>
 {% endblock %}
@@ -153,6 +191,20 @@
     {% if form.captcha %}
         {{ recaptcha_init(LANGUAGE_CODE) }}
     {% endif %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var passwordRule = document.querySelector('.password-rule');
+            var passwordRuleList = passwordRule.querySelector('ul');
+
+            passwordRule.addEventListener('click', function() {
+                if (passwordRuleList.style.display === "none" || passwordRuleList.style.display === "") {
+                    passwordRuleList.style.display = "block";
+                } else {
+                    passwordRuleList.style.display = "none";
+                }
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block body %}
@@ -223,6 +275,15 @@
                     {{ (_('By registering, you agree to our [Terms & Conditions][0].') + '\n\n  [0]: ' + tos_url)|markdown('default', strip_paragraphs=True) }}
                 </span>
             {% endif %} -->
+            <div class="password-rule">
+                <p>비밀번호 생성 규칙</p>
+                <ul>
+                    <li>비밀번호는 최소 8자 이상이어야 합니다.</li>
+                    <li>다른 개인 정보와 유사한 비밀번호는 사용할 수 없습니다.</li>
+                    <li>너무 흔한 비밀번호는 비밀번호로 사용할 수 없습니다.</li>
+                    <li>숫자로만 이루어진 비밀번호는 사용할 수 없습니다.</li>
+                </ul>
+            </div>
             <button style="float:right;" type="submit">{{ _('회원가입') }}</button>
         </form>
     </div>

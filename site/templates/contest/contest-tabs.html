@@ -1,7 +1,39 @@
 {% extends "tabs-base.html" %}
 
 {% block tabs %}
-    
+    <style>
+        .tabs {
+            display: block;
+            border: none;
+            position: relative;
+        }
+        .tabs h2 {
+            margin-bottom: 15px;
+        }
+        .tabs .tab .tab-icon {
+            display: none;
+        }
+        .tabs .tab a, .tabs .tab span {
+            width: 50px;
+            text-align: center;
+            border: none !important;
+            border-bottom: 5px solid #D9D9D9 !important;
+        }
+        .tabs .tab.active a, .tabs .tab.active span {
+            border-bottom: 5px solid #9FCDF2 !important;
+        }
+        form.contest-join-pseudotab {
+            position: absolute;
+            right: 0;
+            display: inline;
+            padding: 0; /* Box obj !important; */
+            margin-left: 0.5em;
+            background: none;
+            background-color: #5C95D9;
+            border: 1px solid #5C95D9;
+        }
+    </style>
+
     {{ make_tab('detail', 'fa-info-circle', url('contest_view', contest.key), _('Info')) }}
     {% if contest.ended or can_edit %}
         {{ make_tab('stats', 'fa-pie-chart', url('contest_stats', contest.key), _('Statistics')) }}

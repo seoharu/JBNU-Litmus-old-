@@ -1,6 +1,27 @@
 {% extends "tabs-base.html" %}
 
 {% block tabs %}
+    <style>
+        .tabs {
+            display: block;
+            border: none;
+        }
+        .tabs h2 {
+            margin-bottom: 15px;
+        }
+        .tabs .tab .tab-icon {
+            display: none;
+        }
+        .tabs .tab a, .tabs .tab span {
+            width: 50px;
+            text-align: center;
+            border: none !important;
+            border-bottom: 5px solid #D9D9D9 !important;
+        }
+        .tabs .tab.active a, .tabs .tab.active span {
+            border-bottom: 5px solid #9FCDF2 !important;
+        }
+    </style>
     {{ make_tab('about', 'fa-info-circle', url('user_page', user.user.username), _('About')) }}
     {{ make_tab('problems', 'fa-puzzle-piece', url('user_problems', user.user.username), _('Problems')) }}
     {% if request.user.is_superuser and user.user != request.user and not user.user.is_superuser %}

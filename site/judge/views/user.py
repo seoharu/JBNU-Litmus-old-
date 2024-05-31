@@ -148,7 +148,7 @@ class CustomLoginView(LoginView):
 
 class CustomPasswordChangeView(PasswordChangeView):
     template_name = 'registration/password_change_form.html'
-    
+
     def form_valid(self, form):
         self.request.session['password_pwned'] = False
         return super().form_valid(form)

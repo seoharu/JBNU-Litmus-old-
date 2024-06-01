@@ -99,8 +99,8 @@ class RegistrationView(OldRegistrationView):
         })
 
         cleaned_data = form.cleaned_data
-        profile.timezone = cleaned_data['timezone']
-        profile.language = settings.DEFAULT_USER_TIME_ZONE
+        profile.timezone = settings.DEFAULT_USER_TIME_ZONE
+        profile.language = cleaned_data['language']
         profile.organizations.add(*cleaned_data['organizations'])
         profile.save()
 

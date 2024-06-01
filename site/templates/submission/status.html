@@ -63,6 +63,11 @@
                     }
                 });
             });
+
+            // 3초 후에 폼을 자동 제출하도록 설정
+            setTimeout(function() {
+                $('#abort-button form').submit();
+            }, 3000); // 3000ms = 3 seconds
         </script>
     {% endif %}
 {% endblock %}

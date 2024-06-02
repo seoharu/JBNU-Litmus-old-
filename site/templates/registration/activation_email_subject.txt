@@ -1,1 +1,1 @@
-{{ _('Activate your %(site_name)s account', site_name=SITE_NAME) }}
+{{ _('%(site_name)s 계정이 활성화되었습니다', site_name=SITE_NAME) }}

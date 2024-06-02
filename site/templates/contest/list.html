@@ -29,7 +29,7 @@
             padding: 0;
             background: none;
             font-weight: 600;
-            background: var(--LITMUS-Primary, #5C95D9);
+            
           }
           form.contest-join-pseudotab {
             border-bottom-left-radius: 10px;
@@ -75,7 +75,7 @@
             background: rgba(255,255,255,1.0);
           }
         .table.striped tr:nth-child(even) {
-            background: #ffffff;
+            background: none;
         }
         .active {
             background: linear-gradient(90deg, rgba(159, 205, 242, 0.2) 0.62%, rgba(167, 231, 244, 0) 100.62%);
@@ -202,7 +202,8 @@
 {% block body %}
     <div class="content-description">
         {% if active_participations %}
-            <h4>{{ _('Active contests') }}</h4>
+            <!-- <h4>{{ _('Active contests') }}</h4> -->
+            <h4>참여 중인 대회</h4>
             <table class="active contest-list table striped">
                 
                 <tbody>
@@ -235,7 +236,7 @@
                                             {# Allow users to leave the virtual contest #}
                                             {% if in_contest %}
                                                 <form action="{{ url('contest_leave', contest.key) }}" method="post"
-                                                    class="contest-join-pseudotab unselectable button">
+                                                    class="contest-join-pseudotab unselectable button ">
                                                     {% csrf_token %}
                                                     <input type="submit" class="leaving-forever" value="{{ _('Leave contest') }}">
                                                 </form>
@@ -266,7 +267,7 @@
                                                     {% csrf_token %}
                                                     <input type="submit"
                                                         class="contest-join{% if not has_joined %} first-join{% endif %}"
-                                                        value="{{ _('Join contest') }}">
+                                                        value="콘테스트 재참가">
                                                 </form>
                                             {% elif contest.is_spectatable_by(request.user) %}
                                                 <form action="{{ url('contest_join', contest.key) }}" method="post"
@@ -293,7 +294,7 @@
                                     </form>
                                 {% endif %}
                             </td>
-                            {{ contest_join(contest, request, finished_contests) }}
+                            
                         </tr>
                     {% endwith %}
                 {% endfor %}
@@ -324,8 +325,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td>
-                        </td>
+                        
                         {{ contest_join(contest, request, finished_contests) }}
                     </tr>
                 {% endfor %}

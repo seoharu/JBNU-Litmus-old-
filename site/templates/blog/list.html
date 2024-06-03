@@ -3,104 +3,111 @@
 {% block title_ruler %}{% endblock %}
 
 {% block media %}
-    <link rel="alternate" type="application/atom+xml" href="{{ url('blog_atom') }}" title="Atom Blog Feed">
-    <link rel="alternate" type="application/rss+xml" href="{{ url('blog_rss') }}" title="RSS Blog Feed">
-    <link rel="alternate" type="application/atom+xml" href="{{ url('comment_atom') }}" title="Atom Comment Feed">
-    <link rel="alternate" type="application/rss+xml" href="{{ url('comment_rss') }}" title="RSS Comment Feed">
-    <link rel="alternate" type="application/atom+xml" href="{{ url('problem_atom') }}" title="Atom Problem Feed">
-    <link rel="alternate" type="application/rss+xml" href="{{ url('problem_rss') }}" title="RSS Problem Feed">
+<link rel="alternate" type="application/atom+xml" href="{{ url('blog_atom') }}" title="Atom Blog Feed">
+<link rel="alternate" type="application/rss+xml" href="{{ url('blog_rss') }}" title="RSS Blog Feed">
+<link rel="alternate" type="application/atom+xml" href="{{ url('comment_atom') }}" title="Atom Comment Feed">
+<link rel="alternate" type="application/rss+xml" href="{{ url('comment_rss') }}" title="RSS Comment Feed">
+<link rel="alternate" type="application/atom+xml" href="{{ url('problem_atom') }}" title="Atom Problem Feed">
+<link rel="alternate" type="application/rss+xml" href="{{ url('problem_rss') }}" title="RSS Problem Feed">
 {% endblock %}
 
 {% block js_media %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.time-remaining').each(function () {
-                count_down($(this));
-            });
-
-            $('.blog-sidebar').hide();
-            $('#blog-tab').find('a').click(function (e) {
-                e.preventDefault();
-                $('#blog-tab').addClass('active');
-                $('#event-tab').removeClass('active');
-                $('.blog-content').show();
-                $('.blog-sidebar').hide();
-            });
-            $('#event-tab').find('a').click(function (e) {
-                e.preventDefault();
-                $('#event-tab').addClass('active');
-                $('#blog-tab').removeClass('active');
-                $('.blog-content').hide();
-                $('.blog-sidebar').show();
-            });
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.time-remaining').each(function () {
+            count_down($(this));
         });
-    </script>
+
+        $('.blog-sidebar').hide();
+        $('#blog-tab').find('a').click(function (e) {
+            e.preventDefault();
+            $('#blog-tab').addClass('active');
+            $('#event-tab').removeClass('active');
+            $('.blog-content').show();
+            $('.blog-sidebar').hide();
+        });
+        $('#event-tab').find('a').click(function (e) {
+            e.preventDefault();
+            $('#event-tab').addClass('active');
+            $('#blog-tab').removeClass('active');
+            $('.blog-content').hide();
+            $('.blog-sidebar').show();
+        });
+    });
+</script>
 {% endblock %}
 
 {% block body %}
-    <style>
-        #blog-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: calc(100vh - 130px);
-        }
-        .blog-main {
-            display: flex;
-            flex-wrap: wrap;
-            width: 80%;
-            height: 40vh;
-        }
-        .left-top {
-            flex: 1 1 50%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start; /* 아래쪽에 붙이기 */
-            gap: 10px; /* 두 div 사이의 간격 */
-            padding: 10px; /* 패딩을 추가하여 요소가 너무 붙지 않도록 설정 */
-            box-sizing: border-box; /* 패딩이 전체 크기에 포함되도록 설정 */
-        }
-        .right-top {
-            flex: 1 1 50%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start; /* 아래쪽에 붙이기 */
-            gap: 5px; /* 두 div 사이의 간격 */
-            padding: 10px; /* 패딩을 추가하여 요소가 너무 붙지 않도록 설정 */
-            box-sizing: border-box; /* 패딩이 전체 크기에 포함되도록 설정 */
-        }
-        .bottom {
-            height: 50%;
-            flex: 1 1 100%; /* 하단 div는 전체 너비를 차지 */
-            margin-top: 10px;
-            border-radius: 10px;
-            background-color: #000;
-        }
-        .top-item {
-            font-size: 50px;
-            font-weight: 600;
-        }
-        .right {
-            font-size: 20px;
-            text-align: right;
-        }
-        .blue {
-            color: #5C95D9;
-        }
-    </style>
-    {% block before_posts %}{% endblock %}
-    <!-- mobile div는 현재 숨겨져 있음. 기능은 잘 모르겠다. -->
-    <div id="mobile" class="tabs">
-        <ul>
-            <li id="blog-tab" class="tab active"><a href="#">
+<style>
+    #blog-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(100vh - 130px);
+    }
+
+    .blog-main {
+        display: flex;
+        flex-wrap: wrap;
+        width: 80%;
+        height: 40vh;
+    }
+
+    .left-top {
+        flex: 1 1 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        /* 아래쪽에 붙이기 */
+        gap: 10px;
+        /* 두 div 사이의 간격 */
+        padding: 10px;
+        /* 패딩을 추가하여 요소가 너무 붙지 않도록 설정 */
+        box-sizing: border-box;
+        /* 패딩이 전체 크기에 포함되도록 설정 */
+    }
+
+    .right-top {
+        flex: 1 1 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        /* 아래쪽에 붙이기 */
+        gap: 5px;
+        /* 두 div 사이의 간격 */
+        padding: 10px;
+        /* 패딩을 추가하여 요소가 너무 붙지 않도록 설정 */
+        box-sizing: border-box;
+        /* 패딩이 전체 크기에 포함되도록 설정 */
+    }
+
+    .top-item {
+        font-size: 50px;
+        font-weight: 600;
+    }
+
+    .right {
+        font-size: 20px;
+        text-align: right;
+    }
+
+    .blue {
+        color: #5C95D9;
+    }
+</style>
+{% block before_posts %}{% endblock %}
+<!-- mobile div는 현재 숨겨져 있음. 기능은 잘 모르겠다. -->
+<div id="mobile" class="tabs">
+    <ul>
+        <li id="blog-tab" class="tab active"><a href="#">
                 <i class="tab-icon fa fa-info-circle"></i> {{ _('Blog') }}
             </a></li>
-            <li id="event-tab" class="tab"><a href="#"><i class="tab-icon fa fa-rss"></i> {{ _('Events') }}</a></li>
-        </ul>
-    </div>
-    <!-- 메인 페이지의 내용 부분. -->
-    <div id="blog-container">
-        <!-- <div class="blog-content sidebox">
+        <li id="event-tab" class="tab"><a href="#"><i class="tab-icon fa fa-rss"></i> {{ _('Events') }}</a></li>
+    </ul>
+</div>
+<!-- 메인 페이지의 내용 부분. -->
+<div id="blog-container">
+    <!-- <div class="blog-content sidebox">
             <h3>{{ _('News') }} <i class="fa fa-terminal"></i></h3>
             <div class="sidebox-content">
                 {% for post in posts %}
@@ -277,20 +284,20 @@
                 </div>
             {% endif %}
         </div> -->
-        <div class="blog-main">
-            <div class="left-top">
-                <div class="top-item">LITMUS</div>
-                <div class="top-item">ONLINE JUDGE</div>
-            </div>
-            <div class="right-top">
-                <div class="top-item right">1300 Algorithm Problems</div>
-                <div class="top-item right blue">With</div>
-                <div class="top-item right">360 People</div>
-            </div>
-            <div class="bottom">
-                <img src="image.png" alt="image" />
-            </div>
+    <div class="blog-main">
+        <div class="left-top">
+            <div class="top-item">LITMUS</div>
+            <div class="top-item">ONLINE JUDGE</div>
+        </div>
+        <div class="right-top">
+            <div class="top-item right">1300 Algorithm Problems</div>
+            <div class="top-item right blue">With</div>
+            <div class="top-item right">360 People</div>
+        </div>
+        <div class="bottom">
+            <img src="main_logo.png" alt="image" />
         </div>
     </div>
-    {% block after_posts %}{% endblock %}
+</div>
+{% block after_posts %}{% endblock %}
 {% endblock %}
